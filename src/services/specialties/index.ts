@@ -1,0 +1,1 @@
+export { createSpecialtiesRouter } from './router';

@@ -1,7 +1,16 @@
 {
-  "name": "express-server-template",
-  "version": "1.0.0",
-  "description": "Express API Server Template - Ready-to-use Express server with TypeScript",
+  "name": "my-health-open-source-express-server",
+  "version": "0.1.0",
+  "description": "Self-hosted health data API — Supabase CRUD for My Health dashboard",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matthewruiz/my-health-open-source-express-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/matthewruiz/my-health-open-source-express-server/issues"
+  },
+  "homepage": "https://github.com/matthewruiz/my-health-open-source-express-server#readme",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts",
@@ -10,17 +19,18 @@
     "build:watch": "tsc --watch"
   },
   "dependencies": {
-    "express": "^5.2.1",
+    "@supabase/supabase-js": "^2.107.0",
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^25.9.1",
-    "typescript": "^6.0.3",
+    "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
-    "nodemon": "^3.1.11"
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=20.0.0"

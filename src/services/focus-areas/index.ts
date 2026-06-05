@@ -1,0 +1,1 @@
+export { createFocusAreasRouter } from './router';

@@ -1,6 +1,6 @@
 # Architecture Documentation
 
-ADRs for **express-server-template** and apps created from it.
+ADRs for **My Health Express** (my-health-open-source-express-server) and Express apps in this family.
 
 ## ADR index
 

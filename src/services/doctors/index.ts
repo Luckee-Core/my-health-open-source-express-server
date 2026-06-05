@@ -1,0 +1,1 @@
+export { createDoctorsRouter } from './router';

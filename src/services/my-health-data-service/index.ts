@@ -1,0 +1,1 @@
+export { createMyHealthDataService } from './router';

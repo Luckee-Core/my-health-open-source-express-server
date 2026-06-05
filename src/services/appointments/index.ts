@@ -1,0 +1,1 @@
+export { createAppointmentsRouter } from './router';
