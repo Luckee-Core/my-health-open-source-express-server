@@ -11,6 +11,7 @@ ADRs for **My Health Express** (my-health-open-source-express-server) and Expres
 5. [005 – Edge functions & Railway boundaries](./005-edge-functions-railway-only.md) — Edge → Railway only.
 6. [006 – Logging & error response standards](./006-logging-and-error-response-standards.md) — Emoji logging, response shape.
 7. [007 – Starter template layout](./007-starter-template-layout.md) — Shipped `src/services/` tree.
+8. [008 – API docs catalog](./008-api-docs-catalog.md) — `GET /api-docs.json`, hand-maintained REST catalog for web `/docs/api`.
 
 ## How to use
 

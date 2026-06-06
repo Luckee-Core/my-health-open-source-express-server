@@ -67,7 +67,10 @@ Default URL: **http://localhost:3009**
 
 ```bash
 curl http://localhost:3009/api/health
+curl -s http://localhost:3009/api-docs.json | head -c 200
 ```
+
+Human-readable API reference: start this server and open **http://localhost:3000/docs/api** in the web app.
 
 You should see JSON with `status: "ok"`. If Supabase env is missing, data routes return 500 — fix `.env` first.
 

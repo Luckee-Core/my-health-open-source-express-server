@@ -13,6 +13,7 @@ Documented seam between the Next.js web app and the companion Express API.
 | **Default API port** | 3009 |
 | **API base env (web)** | `NEXT_PUBLIC_API_URL` (alias: checklist `NEXT_PUBLIC_SERVER_URL`) |
 | **Health endpoint** | `GET /api/health` and `GET /` |
+| **API docs catalog** | `GET /api-docs.json` on Express; web renders at `/docs/api` |
 | **Success JSON** | `{ success: true, data?, count?, message? }` |
 | **Error JSON** | `{ success: false, error: string, message? }` |
 | **Auth (OSS default)** | None — open API on localhost for trusted local dev |
@@ -54,6 +55,7 @@ Entity HTTP routers live in `src/services/{entity}/`. Supabase CRUD lives in `sr
 ```text
 {NEXT_PUBLIC_API_URL}/api/data/...
 {NEXT_PUBLIC_API_URL}/api/health
+{NEXT_PUBLIC_API_URL}/api-docs.json
 ```
 
 ### Entity CRUD
@@ -82,6 +84,7 @@ cp .env.example .env
 npm install
 npm run dev
 curl http://localhost:3009/api/health
+curl -s http://localhost:3009/api-docs.json | head -c 200
 ```
 
 ### Web
@@ -92,6 +95,7 @@ cp .env.example .env.local
 npm install
 npm run dev
 # Open http://localhost:3000 — landing and dashboard should load
+# Open http://localhost:3000/docs/api — API reference (Express must be running)
 ```
 
 ## 5. Governance

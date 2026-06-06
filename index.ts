@@ -19,6 +19,9 @@ app.use('/api/health', createHealthRouter());
 import { createMyHealthDataService } from './src/services/my-health-data-service';
 app.use('/api/data', createMyHealthDataService());
 
+import { createApiDocsRouter } from './src/services/api-docs';
+app.use(createApiDocsRouter());
+
 import { setupErrorHandling } from './src/services/middleware';
 setupErrorHandling(app);
 
