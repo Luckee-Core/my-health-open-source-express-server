@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { createSpecialty } from '../../../data/specialties';
 import type { CreateSpecialtyInput } from '../../../data/specialties';
 import {
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const postSpecialtyHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 POST /api/data/specialties');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const body = req.body as CreateSpecialtyInput;
   if (!body?.name?.trim()) {
@@ -23,7 +23,7 @@ export const postSpecialtyHandler = async (req: Request, res: Response): Promise
   }
 
   try {
-    const created = await createSpecialty(supabase, body);
+    const created = await createSpecialty(pool, body);
     console.log('📤 POST /api/data/specialties');
     sendSuccess(res, created);
   } catch (error) {

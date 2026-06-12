@@ -3,7 +3,7 @@ import { sendHandlerError, sendSuccess } from "../../../utils/http/responses";
 import { buildApiDocsCatalog } from "../api-docs-catalog";
 
 /**
- * Handles GET /api-docs.json — returns the API documentation catalog (metadata only; no Supabase).
+ * Handles GET /api-docs.json — returns the API documentation catalog (metadata only).
  */
 export const getApiDocsJsonHandler = async (_req: Request, res: Response): Promise<void> => {
   console.log("📥 GET /api-docs.json");

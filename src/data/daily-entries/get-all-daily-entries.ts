@@ -1,19 +1,17 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import type { DailyEntry } from './types';
 
 /**
  * Loads all daily entries ordered by entry_date descending.
  */
-export const getAllDailyEntries = async (supabase: SupabaseClient): Promise<DailyEntry[]> => {
-  const { data, error } = await supabase
-    .from('daily_entries')
-    .select('*')
-    .order('entry_date', { ascending: false })
-    .order('focus_area_id', { ascending: true });
-
-  if (error) {
-    throw new Error(`Failed to load daily entries: ${error.message}`);
+export const getAllDailyEntries = async (pool: Pool): Promise<DailyEntry[]> => {
+  try {
+    const result = await pool.query<DailyEntry>(
+      'SELECT * FROM daily_entries ORDER BY entry_date DESC, focus_area_id ASC',
+    );
+    return result.rows;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to load daily entries: ${message}`);
   }
-
-  return (data ?? []) as DailyEntry[];
 };

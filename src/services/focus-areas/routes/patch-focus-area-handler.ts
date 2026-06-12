@@ -3,7 +3,7 @@ import { updateFocusAreaById } from '../../../data/focus-areas';
 import type { UpdateFocusAreaInput } from '../../../data/focus-areas';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -14,8 +14,8 @@ import {
  */
 export const patchFocusAreaHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 PATCH /api/data/focus-areas/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -24,7 +24,7 @@ export const patchFocusAreaHandler = async (req: Request, res: Response): Promis
   }
 
   try {
-    const updated = await updateFocusAreaById(supabase, id, req.body as UpdateFocusAreaInput);
+    const updated = await updateFocusAreaById(pool, id, req.body as UpdateFocusAreaInput);
     console.log('📤 PATCH /api/data/focus-areas/:id');
     sendSuccess(res, updated);
   } catch (error) {

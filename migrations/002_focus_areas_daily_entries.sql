@@ -1,5 +1,5 @@
 -- My Health — focus areas and daily entries
--- Apply in Supabase SQL editor or via migration tool.
+-- Apply with psql: psql "$DATABASE_URL" -f migrations/002_focus_areas_daily_entries.sql
 
 CREATE TABLE IF NOT EXISTS public.focus_areas (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

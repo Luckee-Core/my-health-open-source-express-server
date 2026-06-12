@@ -1,6 +1,6 @@
 export { isValidationError } from './is-validation-error';
 export { parseRouteId } from './parse-route-id';
-export { requireSupabase } from './require-supabase';
+export { requirePgPool } from './require-pg-pool';
 export {
   sendClientError,
   sendHandlerError,

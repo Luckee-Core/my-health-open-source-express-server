@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { createDailyEntry } from '../../../data/daily-entries';
 import type { CreateDailyEntryInput } from '../../../data/daily-entries';
 import {
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const postDailyEntryHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 POST /api/data/daily-entries');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const body = req.body as CreateDailyEntryInput;
   if (!body?.entry_date?.trim()) {
@@ -27,7 +27,7 @@ export const postDailyEntryHandler = async (req: Request, res: Response): Promis
   }
 
   try {
-    const created = await createDailyEntry(supabase, body);
+    const created = await createDailyEntry(pool, body);
     console.log('📤 POST /api/data/daily-entries');
     sendSuccess(res, created);
   } catch (error) {

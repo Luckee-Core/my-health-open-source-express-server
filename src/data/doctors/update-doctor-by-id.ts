@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import { assertHospitalExists, assertSpecialtyExists } from './assert-relations-exist';
 import type { Doctor, UpdateDoctorInput } from './types';
 
@@ -11,41 +11,53 @@ const optionalText = (value: string | null | undefined): string | null => {
  * Updates a doctor by id.
  */
 export const updateDoctorById = async (
-  supabase: SupabaseClient,
+  pool: Pool,
   id: string,
   input: UpdateDoctorInput,
 ): Promise<Doctor> => {
-  const patch: Record<string, string | null> = {
-    updated_at: new Date().toISOString(),
-  };
+  const sets: string[] = ['updated_at = now()'];
+  const values: (string | null)[] = [];
+  let param = 1;
 
   if (input.name !== undefined) {
     const name = input.name.trim();
     if (!name) throw new Error('name cannot be empty');
-    patch.name = name;
+    sets.push(`name = $${param++}`);
+    values.push(name);
   }
   if (input.hospital_id !== undefined) {
     if (!input.hospital_id.trim()) throw new Error('hospital_id is required');
-    await assertHospitalExists(supabase, input.hospital_id);
-    patch.hospital_id = input.hospital_id;
+    await assertHospitalExists(pool, input.hospital_id);
+    sets.push(`hospital_id = $${param++}`);
+    values.push(input.hospital_id);
   }
   if (input.specialty_id !== undefined) {
     if (!input.specialty_id.trim()) throw new Error('specialty_id is required');
-    await assertSpecialtyExists(supabase, input.specialty_id);
-    patch.specialty_id = input.specialty_id;
+    await assertSpecialtyExists(pool, input.specialty_id);
+    sets.push(`specialty_id = $${param++}`);
+    values.push(input.specialty_id);
   }
-  if (input.notes !== undefined) patch.notes = optionalText(input.notes);
-
-  const { data, error } = await supabase
-    .from('doctors')
-    .update(patch)
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(`Failed to update doctor: ${error.message}`);
+  if (input.notes !== undefined) {
+    sets.push(`notes = $${param++}`);
+    values.push(optionalText(input.notes));
   }
 
-  return data as Doctor;
+  values.push(id);
+
+  try {
+    const result = await pool.query<Doctor>(
+      `UPDATE doctors SET ${sets.join(', ')} WHERE id = $${param} RETURNING *`,
+      values,
+    );
+    if (result.rowCount === 0) {
+      throw new Error('doctor not found');
+    }
+    return result.rows[0];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'doctor not found') {
+      throw error;
+    }
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to update doctor: ${message}`);
+  }
 };

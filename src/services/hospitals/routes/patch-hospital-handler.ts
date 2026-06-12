@@ -3,7 +3,7 @@ import { updateHospitalById } from '../../../data/hospitals';
 import type { UpdateHospitalInput } from '../../../data/hospitals';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -14,8 +14,8 @@ import {
  */
 export const patchHospitalHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 PATCH /api/data/hospitals/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -24,7 +24,7 @@ export const patchHospitalHandler = async (req: Request, res: Response): Promise
   }
 
   try {
-    const updated = await updateHospitalById(supabase, id, req.body as UpdateHospitalInput);
+    const updated = await updateHospitalById(pool, id, req.body as UpdateHospitalInput);
     console.log('📤 PATCH /api/data/hospitals/:id');
     sendSuccess(res, updated);
   } catch (error) {

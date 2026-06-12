@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import type { Hospital, UpdateHospitalInput } from './types';
 
 const optionalText = (value: string | null | undefined): string | null => {
@@ -10,34 +10,53 @@ const optionalText = (value: string | null | undefined): string | null => {
  * Updates a hospital by id.
  */
 export const updateHospitalById = async (
-  supabase: SupabaseClient,
+  pool: Pool,
   id: string,
   input: UpdateHospitalInput,
 ): Promise<Hospital> => {
-  const patch: Record<string, string | null> = {
-    updated_at: new Date().toISOString(),
-  };
+  const sets: string[] = ['updated_at = now()'];
+  const values: (string | null)[] = [];
+  let param = 1;
 
   if (input.name !== undefined) {
     const name = input.name.trim();
     if (!name) throw new Error('name cannot be empty');
-    patch.name = name;
+    sets.push(`name = $${param++}`);
+    values.push(name);
   }
-  if (input.address !== undefined) patch.address = optionalText(input.address);
-  if (input.email !== undefined) patch.email = optionalText(input.email);
-  if (input.phone !== undefined) patch.phone = optionalText(input.phone);
-  if (input.notes !== undefined) patch.notes = optionalText(input.notes);
-
-  const { data, error } = await supabase
-    .from('hospitals')
-    .update(patch)
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(`Failed to update hospital: ${error.message}`);
+  if (input.address !== undefined) {
+    sets.push(`address = $${param++}`);
+    values.push(optionalText(input.address));
+  }
+  if (input.email !== undefined) {
+    sets.push(`email = $${param++}`);
+    values.push(optionalText(input.email));
+  }
+  if (input.phone !== undefined) {
+    sets.push(`phone = $${param++}`);
+    values.push(optionalText(input.phone));
+  }
+  if (input.notes !== undefined) {
+    sets.push(`notes = $${param++}`);
+    values.push(optionalText(input.notes));
   }
 
-  return data as Hospital;
+  values.push(id);
+
+  try {
+    const result = await pool.query<Hospital>(
+      `UPDATE hospitals SET ${sets.join(', ')} WHERE id = $${param} RETURNING *`,
+      values,
+    );
+    if (result.rowCount === 0) {
+      throw new Error('hospital not found');
+    }
+    return result.rows[0];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'hospital not found') {
+      throw error;
+    }
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to update hospital: ${message}`);
+  }
 };

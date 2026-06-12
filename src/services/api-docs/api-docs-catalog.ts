@@ -65,10 +65,10 @@ const dailyEntryExample = {
 const buildOverviewGroup = (): ApiDocsGroup => ({
   name: "Overview",
   description: [
-    "REST API for the open-source My Health app. Supabase stores hospitals, specialties, doctors, appointments, focus areas, and daily journal entries; this Express server exposes CRUD over HTTP for the Next.js dashboard or any client.",
+    "REST API for the open-source My Health app. On-device Postgres stores hospitals, specialties, doctors, appointments, focus areas, and daily journal entries; this Express server exposes CRUD over HTTP for the Next.js dashboard or any client.",
     "Route layout: `/api/data/*` — REST entity CRUD (`GET/POST /`, `PATCH/DELETE /:id`); `GET /api-docs.json` — this catalog. There is no `GET /:id` single-entity fetch — list all rows and filter client-side, or use PATCH/DELETE with a known id.",
     "Typical flow: create hospitals and specialties → add doctors (linked to hospital + specialty) → schedule appointments → define focus areas → log daily entries against a focus area and date.",
-    "Success JSON: `{ success: true, data }`. Error JSON: `{ success: false, error: string }`. DELETE returns `{ success: true, data: null }`. OSS default has no authentication — bind to localhost for trusted local dev. Requires `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` on Express.",
+    "Success JSON: `{ success: true, data }`. Error JSON: `{ success: false, error: string }`. DELETE returns `{ success: true, data: null }`. OSS default has no authentication — bind to localhost for trusted local dev. Requires `DATABASE_URL` on Express.",
   ].join("\n\n"),
   endpoints: [],
 });

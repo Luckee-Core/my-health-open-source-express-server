@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { deleteFocusAreaById } from '../../../data/focus-areas';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const deleteFocusAreaHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 DELETE /api/data/focus-areas/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -23,7 +23,7 @@ export const deleteFocusAreaHandler = async (req: Request, res: Response): Promi
   }
 
   try {
-    await deleteFocusAreaById(supabase, id);
+    await deleteFocusAreaById(pool, id);
     console.log('📤 DELETE /api/data/focus-areas/:id');
     sendSuccess(res, null);
   } catch (error) {

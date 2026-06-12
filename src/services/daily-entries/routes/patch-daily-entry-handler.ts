@@ -3,7 +3,7 @@ import { updateDailyEntryById } from '../../../data/daily-entries';
 import type { UpdateDailyEntryInput } from '../../../data/daily-entries';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -14,8 +14,8 @@ import {
  */
 export const patchDailyEntryHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 PATCH /api/data/daily-entries/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -24,7 +24,7 @@ export const patchDailyEntryHandler = async (req: Request, res: Response): Promi
   }
 
   try {
-    const updated = await updateDailyEntryById(supabase, id, req.body as UpdateDailyEntryInput);
+    const updated = await updateDailyEntryById(pool, id, req.body as UpdateDailyEntryInput);
     console.log('📤 PATCH /api/data/daily-entries/:id');
     sendSuccess(res, updated);
   } catch (error) {

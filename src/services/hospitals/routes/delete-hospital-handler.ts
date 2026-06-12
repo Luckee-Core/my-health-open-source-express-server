@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { deleteHospitalById } from '../../../data/hospitals';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const deleteHospitalHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 DELETE /api/data/hospitals/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -23,7 +23,7 @@ export const deleteHospitalHandler = async (req: Request, res: Response): Promis
   }
 
   try {
-    await deleteHospitalById(supabase, id);
+    await deleteHospitalById(pool, id);
     console.log('📤 DELETE /api/data/hospitals/:id');
     sendSuccess(res, null);
   } catch (error) {

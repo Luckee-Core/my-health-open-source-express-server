@@ -1,5 +1,5 @@
 -- My Health — hospitals, specialties, doctors, appointments
--- Apply in Supabase SQL editor or via migration tool.
+-- Apply with psql: psql "$DATABASE_URL" -f migrations/001_hospitals_specialties_doctors_appointments.sql
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 

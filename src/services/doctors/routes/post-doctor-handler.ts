@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { createDoctor } from '../../../data/doctors';
 import type { CreateDoctorInput } from '../../../data/doctors';
 import {
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const postDoctorHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 POST /api/data/doctors');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const body = req.body as CreateDoctorInput;
   if (!body?.name?.trim()) {
@@ -31,7 +31,7 @@ export const postDoctorHandler = async (req: Request, res: Response): Promise<vo
   }
 
   try {
-    const created = await createDoctor(supabase, body);
+    const created = await createDoctor(pool, body);
     console.log('📤 POST /api/data/doctors');
     sendSuccess(res, created);
   } catch (error) {

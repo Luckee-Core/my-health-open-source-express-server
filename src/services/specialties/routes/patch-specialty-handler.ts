@@ -3,7 +3,7 @@ import { updateSpecialtyById } from '../../../data/specialties';
 import type { UpdateSpecialtyInput } from '../../../data/specialties';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -14,8 +14,8 @@ import {
  */
 export const patchSpecialtyHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 PATCH /api/data/specialties/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -24,7 +24,7 @@ export const patchSpecialtyHandler = async (req: Request, res: Response): Promis
   }
 
   try {
-    const updated = await updateSpecialtyById(supabase, id, req.body as UpdateSpecialtyInput);
+    const updated = await updateSpecialtyById(pool, id, req.body as UpdateSpecialtyInput);
     console.log('📤 PATCH /api/data/specialties/:id');
     sendSuccess(res, updated);
   } catch (error) {

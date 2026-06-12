@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import { assertDoctorExists } from './assert-doctor-exists';
 import { isAppointmentStatus, resolveCompletedAt } from './resolve-completed-at';
 import type { Appointment, AppointmentStatus, UpdateAppointmentInput } from './types';
@@ -12,40 +12,57 @@ const optionalText = (value: string | null | undefined): string | null => {
  * Updates an appointment by id.
  */
 export const updateAppointmentById = async (
-  supabase: SupabaseClient,
+  pool: Pool,
   id: string,
   input: UpdateAppointmentInput,
 ): Promise<Appointment> => {
-  const { data: existing, error: loadError } = await supabase
-    .from('appointments')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (loadError || !existing) {
-    throw new Error('appointment not found');
+  let existing: Appointment;
+  try {
+    const loadResult = await pool.query<Appointment>(
+      'SELECT * FROM appointments WHERE id = $1',
+      [id],
+    );
+    if (loadResult.rowCount === 0) {
+      throw new Error('appointment not found');
+    }
+    existing = loadResult.rows[0];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'appointment not found') {
+      throw error;
+    }
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to load appointment: ${message}`);
   }
 
-  const patch: Record<string, string | null> = {
-    updated_at: new Date().toISOString(),
-  };
+  const sets: string[] = ['updated_at = now()'];
+  const values: (string | null)[] = [];
+  let param = 1;
 
   if (input.doctor_id !== undefined) {
     if (!input.doctor_id.trim()) throw new Error('doctor_id is required');
-    await assertDoctorExists(supabase, input.doctor_id);
-    patch.doctor_id = input.doctor_id;
+    await assertDoctorExists(pool, input.doctor_id);
+    sets.push(`doctor_id = $${param++}`);
+    values.push(input.doctor_id);
   }
   if (input.scheduled_at !== undefined) {
     if (!input.scheduled_at.trim()) throw new Error('scheduled_at is required');
     const scheduledAt = new Date(input.scheduled_at);
     if (Number.isNaN(scheduledAt.getTime())) throw new Error('Invalid scheduled_at');
-    patch.scheduled_at = scheduledAt.toISOString();
+    sets.push(`scheduled_at = $${param++}`);
+    values.push(scheduledAt.toISOString());
   }
   if (input.appointment_type !== undefined) {
-    patch.appointment_type = optionalText(input.appointment_type);
+    sets.push(`appointment_type = $${param++}`);
+    values.push(optionalText(input.appointment_type));
   }
-  if (input.reason !== undefined) patch.reason = optionalText(input.reason);
-  if (input.notes !== undefined) patch.notes = optionalText(input.notes);
+  if (input.reason !== undefined) {
+    sets.push(`reason = $${param++}`);
+    values.push(optionalText(input.reason));
+  }
+  if (input.notes !== undefined) {
+    sets.push(`notes = $${param++}`);
+    values.push(optionalText(input.notes));
+  }
 
   let nextStatus = existing.status as AppointmentStatus;
   if (input.status !== undefined) {
@@ -53,26 +70,36 @@ export const updateAppointmentById = async (
       throw new Error('status must be scheduled, completed, or cancelled');
     }
     nextStatus = input.status;
-    patch.status = input.status;
+    sets.push(`status = $${param++}`);
+    values.push(input.status);
   }
 
   if (input.status !== undefined || input.completed_at !== undefined) {
-    patch.completed_at = resolveCompletedAt(
-      nextStatus,
-      input.completed_at !== undefined ? input.completed_at : existing.completed_at,
+    sets.push(`completed_at = $${param++}`);
+    values.push(
+      resolveCompletedAt(
+        nextStatus,
+        input.completed_at !== undefined ? input.completed_at : existing.completed_at,
+      ),
     );
   }
 
-  const { data, error } = await supabase
-    .from('appointments')
-    .update(patch)
-    .eq('id', id)
-    .select()
-    .single();
+  values.push(id);
 
-  if (error) {
-    throw new Error(`Failed to update appointment: ${error.message}`);
+  try {
+    const result = await pool.query<Appointment>(
+      `UPDATE appointments SET ${sets.join(', ')} WHERE id = $${param} RETURNING *`,
+      values,
+    );
+    if (result.rowCount === 0) {
+      throw new Error('appointment not found');
+    }
+    return result.rows[0];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'appointment not found') {
+      throw error;
+    }
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to update appointment: ${message}`);
   }
-
-  return data as Appointment;
 };

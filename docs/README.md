@@ -4,21 +4,24 @@
 
 | Doc | Description |
 |-----|-------------|
+| [Local Postgres (Mac)](./how-to/local-postgres-mac.md) | Homebrew install, `my_health` database, `psql` migrations |
 | [OSS wire contract](./oss/wire-contract.md) | Web + Express pairing, env vars, routes |
 | [OSS governance](./oss/README.md) | Release checklist and audit guide links |
-| [Supabase schema](./supabase/) | Database tables and migration SQL |
 
-## Supabase setup (run in order)
+## Schema setup (run in order)
 
-1. [001_hospitals_specialties_doctors_appointments.sql](./supabase/001_hospitals_specialties_doctors_appointments.sql)
-2. [002_focus_areas_daily_entries.sql](./supabase/002_focus_areas_daily_entries.sql)
+Apply with `psql` against your `DATABASE_URL`:
 
-Apply in the Supabase SQL editor or your migration tool before starting the API.
+1. [001_hospitals_specialties_doctors_appointments.sql](../migrations/001_hospitals_specialties_doctors_appointments.sql)
+2. [002_focus_areas_daily_entries.sql](../migrations/002_focus_areas_daily_entries.sql)
+
+See [local-postgres-mac.md](./how-to/local-postgres-mac.md) for copy-paste commands.
 
 ## Smoke test
 
 ```bash
 curl http://localhost:3009/api/health
+curl http://localhost:3009/api/data/specialties
 ```
 
-Expected: JSON with `status: "ok"`.
+Expected: JSON with `status: "ok"` and seeded specialty rows.

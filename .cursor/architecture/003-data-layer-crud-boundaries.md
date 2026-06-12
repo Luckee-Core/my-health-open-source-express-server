@@ -34,12 +34,12 @@ Database access must stay isolated from HTTP handlers and business logic. **`src
 - Calling `processX()` or handlers
 - AI / external API calls
 
-### 4) Supabase client contract
+### 4) Postgres pool contract
 
-1. Every data function accepts `SupabaseClient` as the first parameter.
-2. No `createClient()` in data, services, or handlers.
-3. Handlers get clients via `getManagedSupabaseClient()`, pass into `processX()`, then into data functions.
-4. Null managed client → HTTP `500`.
+1. Every data function accepts `Pool` (from `pg`) as the first parameter.
+2. No `new Pool()` in data, services, or handlers.
+3. Handlers get the pool via `requirePgPool()` / `getManagedPgPool()`, pass into `processX()`, then into data functions.
+4. Null managed pool → HTTP `500`.
 
 ### 5) Service layer (`src/services/{feature}/`)
 
@@ -78,34 +78,35 @@ src/
 ### Data (`src/data/users/get-user-by-id.ts`)
 
 ```ts
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import type { UserRow } from './types';
 
 /**
  * Fetches one user row by ID.
  */
 export async function getUserById(
-  supabase: SupabaseClient,
+  pool: Pool,
   userId: string,
 ): Promise<UserRow | null> {
-  console.log('💾 getUserById', { userId });
-  const { data, error } = await supabase.from('users').select('*').eq('id', userId).single();
-  if (error) throw error;
-  return data;
+  const result = await pool.query<UserRow>(
+    'SELECT * FROM users WHERE id = $1',
+    [userId],
+  );
+  return result.rows[0] ?? null;
 }
 ```
 
 ### Business logic (`src/services/users/process-get-user.ts`)
 
 ```ts
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import { getUserById } from '../../data/users/get-user-by-id';
 
 /**
  * Loads a user for GET /users/:id.
  */
-export async function processGetUser(supabase: SupabaseClient, userId: string) {
-  const user = await getUserById(supabase, userId);
+export async function processGetUser(pool: Pool, userId: string) {
+  const user = await getUserById(pool, userId);
   if (!user) throw new Error('User not found');
   return user;
 }
@@ -115,28 +116,25 @@ export async function processGetUser(supabase: SupabaseClient, userId: string) {
 
 ```ts
 import type { Request, Response } from 'express';
-import { getManagedSupabaseClient } from '../../managed/clients';
+import { requirePgPool, sendSuccess, sendHandlerError } from '../../../utils/http';
 import { processGetUser } from '../process-get-user';
 
 /**
  * Handles GET /users/:id.
  */
 export async function getUserHandler(req: Request, res: Response) {
+  const pool = requirePgPool(res);
+  if (!pool) return;
   try {
-    const supabase = getManagedSupabaseClient();
-    if (!supabase) {
-      return res.status(500).json({ success: false, error: 'Service unavailable' });
-    }
     const { id } = req.params;
     if (!id) {
       return res.status(400).json({ success: false, error: 'Missing id' });
     }
     console.log('📥 GET /users/:id', { id });
-    const user = await processGetUser(supabase, id);
-    return res.status(200).json({ success: true, data: user });
+    const user = await processGetUser(pool, id);
+    sendSuccess(res, user);
   } catch (error) {
-    console.error('❌ Failed to fetch user', error);
-    return res.status(500).json({ success: false, error: 'Internal server error' });
+    sendHandlerError(res, error, 'GET /users/:id');
   }
 }
 ```
@@ -147,8 +145,8 @@ export async function getUserHandler(req: Request, res: Response) {
 
 ```ts
 // src/services/users/process-get-user.ts
-export async function processGetUser(supabase, userId: string) {
-  const { data } = await supabase.from('users').select('*').eq('id', userId).single(); // ❌
+export async function processGetUser(pool, userId: string) {
+  const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]); // ❌
   return data;
 }
 ```

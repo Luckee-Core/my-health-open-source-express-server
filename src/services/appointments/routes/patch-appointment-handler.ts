@@ -3,7 +3,7 @@ import { updateAppointmentById } from '../../../data/appointments';
 import type { UpdateAppointmentInput } from '../../../data/appointments';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -14,8 +14,8 @@ import {
  */
 export const patchAppointmentHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 PATCH /api/data/appointments/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -24,7 +24,7 @@ export const patchAppointmentHandler = async (req: Request, res: Response): Prom
   }
 
   try {
-    const updated = await updateAppointmentById(supabase, id, req.body as UpdateAppointmentInput);
+    const updated = await updateAppointmentById(pool, id, req.body as UpdateAppointmentInput);
     console.log('📤 PATCH /api/data/appointments/:id');
     sendSuccess(res, updated);
   } catch (error) {

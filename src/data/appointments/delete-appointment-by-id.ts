@@ -1,15 +1,13 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 
 /**
  * Deletes an appointment by id.
  */
-export const deleteAppointmentById = async (
-  supabase: SupabaseClient,
-  id: string,
-): Promise<void> => {
-  const { error } = await supabase.from('appointments').delete().eq('id', id);
-
-  if (error) {
-    throw new Error(`Failed to delete appointment: ${error.message}`);
+export const deleteAppointmentById = async (pool: Pool, id: string): Promise<void> => {
+  try {
+    await pool.query('DELETE FROM appointments WHERE id = $1', [id]);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to delete appointment: ${message}`);
   }
 };

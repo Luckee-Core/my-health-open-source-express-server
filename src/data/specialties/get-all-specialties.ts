@@ -1,18 +1,17 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import type { Specialty } from './types';
 
 /**
  * Loads all specialties ordered by name.
  */
-export const getAllSpecialties = async (supabase: SupabaseClient): Promise<Specialty[]> => {
-  const { data, error } = await supabase
-    .from('specialties')
-    .select('*')
-    .order('name', { ascending: true });
-
-  if (error) {
-    throw new Error(`Failed to load specialties: ${error.message}`);
+export const getAllSpecialties = async (pool: Pool): Promise<Specialty[]> => {
+  try {
+    const result = await pool.query<Specialty>(
+      'SELECT * FROM specialties ORDER BY name ASC',
+    );
+    return result.rows;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to load specialties: ${message}`);
   }
-
-  return (data ?? []) as Specialty[];
 };

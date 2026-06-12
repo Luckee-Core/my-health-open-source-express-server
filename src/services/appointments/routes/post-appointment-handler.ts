@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { createAppointment } from '../../../data/appointments';
 import type { CreateAppointmentInput } from '../../../data/appointments';
 import {
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const postAppointmentHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 POST /api/data/appointments');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const body = req.body as CreateAppointmentInput;
   if (!body?.doctor_id?.trim()) {
@@ -27,7 +27,7 @@ export const postAppointmentHandler = async (req: Request, res: Response): Promi
   }
 
   try {
-    const created = await createAppointment(supabase, body);
+    const created = await createAppointment(pool, body);
     console.log('📤 POST /api/data/appointments');
     sendSuccess(res, created);
   } catch (error) {

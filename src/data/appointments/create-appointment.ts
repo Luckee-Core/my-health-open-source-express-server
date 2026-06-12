@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import { assertDoctorExists } from './assert-doctor-exists';
 import { isAppointmentStatus, resolveCompletedAt } from './resolve-completed-at';
 import type { Appointment, CreateAppointmentInput } from './types';
@@ -12,7 +12,7 @@ const optionalText = (value: string | null | undefined): string | null => {
  * Creates an appointment record.
  */
 export const createAppointment = async (
-  supabase: SupabaseClient,
+  pool: Pool,
   input: CreateAppointmentInput,
 ): Promise<Appointment> => {
   if (!input.doctor_id?.trim()) {
@@ -31,25 +31,27 @@ export const createAppointment = async (
     throw new Error('status must be scheduled, completed, or cancelled');
   }
 
-  await assertDoctorExists(supabase, input.doctor_id);
+  await assertDoctorExists(pool, input.doctor_id);
 
-  const { data, error } = await supabase
-    .from('appointments')
-    .insert({
-      doctor_id: input.doctor_id,
-      scheduled_at: scheduledAt.toISOString(),
-      status,
-      appointment_type: optionalText(input.appointment_type),
-      reason: optionalText(input.reason),
-      notes: optionalText(input.notes),
-      completed_at: resolveCompletedAt(status, input.completed_at),
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(`Failed to create appointment: ${error.message}`);
+  try {
+    const result = await pool.query<Appointment>(
+      `INSERT INTO appointments (
+         doctor_id, scheduled_at, status, appointment_type, reason, notes, completed_at
+       ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING *`,
+      [
+        input.doctor_id,
+        scheduledAt.toISOString(),
+        status,
+        optionalText(input.appointment_type),
+        optionalText(input.reason),
+        optionalText(input.notes),
+        resolveCompletedAt(status, input.completed_at),
+      ],
+    );
+    return result.rows[0];
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to create appointment: ${message}`);
   }
-
-  return data as Appointment;
 };

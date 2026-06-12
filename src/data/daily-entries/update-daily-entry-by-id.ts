@@ -1,4 +1,5 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
+import { isUniqueViolation } from '../../utils/postgres';
 import { assertFocusAreaExists } from './assert-focus-area-exists';
 import type { DailyEntry, UpdateDailyEntryInput } from './types';
 
@@ -23,46 +24,55 @@ const parseEntryDate = (value: string): string => {
  * Updates a daily entry by id.
  */
 export const updateDailyEntryById = async (
-  supabase: SupabaseClient,
+  pool: Pool,
   id: string,
   input: UpdateDailyEntryInput,
 ): Promise<DailyEntry> => {
-  const patch: Record<string, string | null> = {
-    updated_at: new Date().toISOString(),
-  };
+  const sets: string[] = ['updated_at = now()'];
+  const values: (string | null)[] = [];
+  let param = 1;
 
   if (input.entry_date !== undefined) {
     if (!input.entry_date.trim()) {
       throw new Error('entry_date cannot be empty');
     }
-    patch.entry_date = parseEntryDate(input.entry_date);
+    sets.push(`entry_date = $${param++}`);
+    values.push(parseEntryDate(input.entry_date));
   }
 
   if (input.focus_area_id !== undefined) {
     if (!input.focus_area_id.trim()) {
       throw new Error('focus_area_id cannot be empty');
     }
-    await assertFocusAreaExists(supabase, input.focus_area_id);
-    patch.focus_area_id = input.focus_area_id;
+    await assertFocusAreaExists(pool, input.focus_area_id);
+    sets.push(`focus_area_id = $${param++}`);
+    values.push(input.focus_area_id);
   }
 
   if (input.notes !== undefined) {
-    patch.notes = optionalText(input.notes);
+    sets.push(`notes = $${param++}`);
+    values.push(optionalText(input.notes));
   }
 
-  const { data, error } = await supabase
-    .from('daily_entries')
-    .update(patch)
-    .eq('id', id)
-    .select()
-    .single();
+  values.push(id);
 
-  if (error) {
-    if (error.message.includes('idx_daily_entries_date_focus_area')) {
+  try {
+    const result = await pool.query<DailyEntry>(
+      `UPDATE daily_entries SET ${sets.join(', ')} WHERE id = $${param} RETURNING *`,
+      values,
+    );
+    if (result.rowCount === 0) {
+      throw new Error('daily entry not found');
+    }
+    return result.rows[0];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'daily entry not found') {
+      throw error;
+    }
+    if (isUniqueViolation(error, 'idx_daily_entries_date_focus_area')) {
       throw new Error('An entry already exists for this date and focus area');
     }
-    throw new Error(`Failed to update daily entry: ${error.message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to update daily entry: ${message}`);
   }
-
-  return data as DailyEntry;
 };

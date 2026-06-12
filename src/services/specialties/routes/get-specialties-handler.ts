@@ -1,17 +1,17 @@
 import type { Request, Response } from 'express';
 import { getAllSpecialties } from '../../../data/specialties';
-import { requireSupabase, sendHandlerError, sendSuccess } from '../../../utils/http';
+import { requirePgPool, sendHandlerError, sendSuccess } from '../../../utils/http';
 
 /**
  * Handles GET /api/data/specialties.
  */
 export const getSpecialtiesHandler = async (_req: Request, res: Response): Promise<void> => {
   console.log('📥 GET /api/data/specialties');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   try {
-    const rows = await getAllSpecialties(supabase);
+    const rows = await getAllSpecialties(pool);
     console.log('📤 GET /api/data/specialties');
     sendSuccess(res, rows);
   } catch (error) {

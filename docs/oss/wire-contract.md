@@ -20,7 +20,7 @@ Documented seam between the Next.js web app and the companion Express API.
 
 ### Router layout exception
 
-Entity HTTP routers live in `src/services/{entity}/`. Supabase CRUD lives in `src/data/{entity}/`. This differs from Lead Studio’s `src/data/{entity}/router.ts` pattern but matches this repo’s ADRs.
+Entity HTTP routers live in `src/services/{entity}/`. Postgres CRUD lives in `src/data/{entity}/`. This differs from Lead Studio’s `src/data/{entity}/router.ts` pattern but matches this repo’s ADRs.
 
 ## 2. Environment variables
 
@@ -35,7 +35,7 @@ Entity HTTP routers live in `src/services/{entity}/`. Supabase CRUD lives in `sr
 | `NEXT_PUBLIC_DOCS_URL` | **Yes** | No | Override docs link on landing |
 | `NEXT_PUBLIC_THT_URL` | **Yes** | No | TroutHouseTech link on landing |
 
-**Rule:** Never put Supabase service-role keys or other server secrets in `NEXT_PUBLIC_*`.
+**Rule:** Never put `DATABASE_URL` or other server secrets in `NEXT_PUBLIC_*`.
 
 ### 2.2 Express (`my-health-open-source-express-server`)
 
@@ -43,9 +43,8 @@ Entity HTTP routers live in `src/services/{entity}/`. Supabase CRUD lives in `sr
 |----------|----------|---------|
 | `PORT` | No (default 3009) | Listen port |
 | `NODE_ENV` | No | `development` / `production` |
-| `SUPABASE_URL` | **Yes** | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | **Yes** | Server-side Supabase client |
-| `SUPABASE_SERVICE_KEY` | Alias | Accepted alias for service role key |
+| `DATABASE_URL` | **Yes** | Postgres connection string (server only) |
+| `PG_POOL_MAX` | No | Connection pool cap (default 10) |
 | `CORS_ORIGINS` | No | Future: comma-separated browser origins |
 
 ## 3. HTTP routing map
@@ -79,8 +78,8 @@ Aggregator: `src/services/my-health-data-service/router.ts`.
 
 ```bash
 cp .env.example .env
-# Fill SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
-# Apply docs/supabase/*.sql in order
+# Fill DATABASE_URL (see docs/how-to/local-postgres-mac.md)
+# Apply migrations/*.sql in order with psql
 npm install
 npm run dev
 curl http://localhost:3009/api/health

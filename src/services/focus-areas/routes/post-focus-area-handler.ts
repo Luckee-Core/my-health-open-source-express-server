@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { createFocusArea } from '../../../data/focus-areas';
 import type { CreateFocusAreaInput } from '../../../data/focus-areas';
 import {
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const postFocusAreaHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 POST /api/data/focus-areas');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const body = req.body as CreateFocusAreaInput;
   if (!body?.name?.trim()) {
@@ -23,7 +23,7 @@ export const postFocusAreaHandler = async (req: Request, res: Response): Promise
   }
 
   try {
-    const created = await createFocusArea(supabase, body);
+    const created = await createFocusArea(pool, body);
     console.log('📤 POST /api/data/focus-areas');
     sendSuccess(res, created);
   } catch (error) {

@@ -1,4 +1,5 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
+import { isUniqueViolation } from '../../utils/postgres';
 import { assertFocusAreaExists } from './assert-focus-area-exists';
 import type { CreateDailyEntryInput, DailyEntry } from './types';
 
@@ -23,7 +24,7 @@ const parseEntryDate = (value: string): string => {
  * Creates a daily entry record.
  */
 export const createDailyEntry = async (
-  supabase: SupabaseClient,
+  pool: Pool,
   input: CreateDailyEntryInput,
 ): Promise<DailyEntry> => {
   if (!input.focus_area_id?.trim()) {
@@ -34,24 +35,21 @@ export const createDailyEntry = async (
   }
 
   const entryDate = parseEntryDate(input.entry_date);
-  await assertFocusAreaExists(supabase, input.focus_area_id);
+  await assertFocusAreaExists(pool, input.focus_area_id);
 
-  const { data, error } = await supabase
-    .from('daily_entries')
-    .insert({
-      entry_date: entryDate,
-      focus_area_id: input.focus_area_id,
-      notes: optionalText(input.notes),
-    })
-    .select()
-    .single();
-
-  if (error) {
-    if (error.message.includes('idx_daily_entries_date_focus_area')) {
+  try {
+    const result = await pool.query<DailyEntry>(
+      `INSERT INTO daily_entries (entry_date, focus_area_id, notes)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [entryDate, input.focus_area_id, optionalText(input.notes)],
+    );
+    return result.rows[0];
+  } catch (error) {
+    if (isUniqueViolation(error, 'idx_daily_entries_date_focus_area')) {
       throw new Error('An entry already exists for this date and focus area');
     }
-    throw new Error(`Failed to create daily entry: ${error.message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to create daily entry: ${message}`);
   }
-
-  return data as DailyEntry;
 };

@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 import type { CreateHospitalInput, Hospital } from './types';
 
 const optionalText = (value: string | null | undefined): string | null => {
@@ -10,7 +10,7 @@ const optionalText = (value: string | null | undefined): string | null => {
  * Creates a hospital / medical facility record.
  */
 export const createHospital = async (
-  supabase: SupabaseClient,
+  pool: Pool,
   input: CreateHospitalInput,
 ): Promise<Hospital> => {
   const name = input.name?.trim() ?? '';
@@ -18,21 +18,22 @@ export const createHospital = async (
     throw new Error('name is required');
   }
 
-  const { data, error } = await supabase
-    .from('hospitals')
-    .insert({
-      name,
-      address: optionalText(input.address),
-      email: optionalText(input.email),
-      phone: optionalText(input.phone),
-      notes: optionalText(input.notes),
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(`Failed to create hospital: ${error.message}`);
+  try {
+    const result = await pool.query<Hospital>(
+      `INSERT INTO hospitals (name, address, email, phone, notes)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [
+        name,
+        optionalText(input.address),
+        optionalText(input.email),
+        optionalText(input.phone),
+        optionalText(input.notes),
+      ],
+    );
+    return result.rows[0];
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to create hospital: ${message}`);
   }
-
-  return data as Hospital;
 };

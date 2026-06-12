@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { deleteDailyEntryById } from '../../../data/daily-entries';
 import {
   parseRouteId,
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const deleteDailyEntryHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 DELETE /api/data/daily-entries/:id');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const id = parseRouteId(req.params.id);
   if (!id) {
@@ -23,7 +23,7 @@ export const deleteDailyEntryHandler = async (req: Request, res: Response): Prom
   }
 
   try {
-    await deleteDailyEntryById(supabase, id);
+    await deleteDailyEntryById(pool, id);
     console.log('📤 DELETE /api/data/daily-entries/:id');
     sendSuccess(res, null);
   } catch (error) {

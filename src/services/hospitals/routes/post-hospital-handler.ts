@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { createHospital } from '../../../data/hospitals';
 import type { CreateHospitalInput } from '../../../data/hospitals';
 import {
-  requireSupabase,
+  requirePgPool,
   sendClientError,
   sendHandlerError,
   sendSuccess,
@@ -13,8 +13,8 @@ import {
  */
 export const postHospitalHandler = async (req: Request, res: Response): Promise<void> => {
   console.log('📥 POST /api/data/hospitals');
-  const supabase = requireSupabase(res);
-  if (!supabase) return;
+  const pool = requirePgPool(res);
+  if (!pool) return;
 
   const body = req.body as CreateHospitalInput;
   if (!body?.name?.trim()) {
@@ -23,7 +23,7 @@ export const postHospitalHandler = async (req: Request, res: Response): Promise<
   }
 
   try {
-    const created = await createHospital(supabase, body);
+    const created = await createHospital(pool, body);
     console.log('📤 POST /api/data/hospitals');
     sendSuccess(res, created);
   } catch (error) {

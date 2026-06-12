@@ -1,12 +1,13 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Pool } from 'pg';
 
 /**
  * Deletes a focus area by id.
  */
-export const deleteFocusAreaById = async (supabase: SupabaseClient, id: string): Promise<void> => {
-  const { error } = await supabase.from('focus_areas').delete().eq('id', id);
-
-  if (error) {
-    throw new Error(`Failed to delete focus area: ${error.message}`);
+export const deleteFocusAreaById = async (pool: Pool, id: string): Promise<void> => {
+  try {
+    await pool.query('DELETE FROM focus_areas WHERE id = $1', [id]);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to delete focus area: ${message}`);
   }
 };
