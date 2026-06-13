@@ -1,6 +1,10 @@
 import type { Request, Response } from 'express';
-import { getAllDoctors } from '../../../data/doctors';
-import { requirePgPool, sendHandlerError, sendSuccess } from '../../../utils/http';
+import { processGetAllDoctors } from '../process-get-all-doctors';
+import {
+  requirePgPool,
+  sendHandlerError,
+  sendSuccess,
+} from '../../../utils/http';
 
 /**
  * Handles GET /api/data/doctors.
@@ -11,7 +15,8 @@ export const getDoctorsHandler = async (_req: Request, res: Response): Promise<v
   if (!pool) return;
 
   try {
-    const rows = await getAllDoctors(pool);
+    const rows = await processGetAllDoctors(pool);
+    console.log('✅ GET /api/data/doctors');
     console.log('📤 GET /api/data/doctors');
     sendSuccess(res, rows);
   } catch (error) {

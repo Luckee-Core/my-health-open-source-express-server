@@ -1,6 +1,10 @@
 import type { Request, Response } from 'express';
-import { getAllSpecialties } from '../../../data/specialties';
-import { requirePgPool, sendHandlerError, sendSuccess } from '../../../utils/http';
+import { processGetAllSpecialties } from '../process-get-all-specialties';
+import {
+  requirePgPool,
+  sendHandlerError,
+  sendSuccess,
+} from '../../../utils/http';
 
 /**
  * Handles GET /api/data/specialties.
@@ -11,7 +15,8 @@ export const getSpecialtiesHandler = async (_req: Request, res: Response): Promi
   if (!pool) return;
 
   try {
-    const rows = await getAllSpecialties(pool);
+    const rows = await processGetAllSpecialties(pool);
+    console.log('✅ GET /api/data/specialties');
     console.log('📤 GET /api/data/specialties');
     sendSuccess(res, rows);
   } catch (error) {

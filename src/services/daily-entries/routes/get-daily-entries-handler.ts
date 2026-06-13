@@ -1,6 +1,10 @@
 import type { Request, Response } from 'express';
-import { getAllDailyEntries } from '../../../data/daily-entries';
-import { requirePgPool, sendHandlerError, sendSuccess } from '../../../utils/http';
+import { processGetAllDailyEntries } from '../process-get-all-daily-entries';
+import {
+  requirePgPool,
+  sendHandlerError,
+  sendSuccess,
+} from '../../../utils/http';
 
 /**
  * Handles GET /api/data/daily-entries.
@@ -11,7 +15,8 @@ export const getDailyEntriesHandler = async (_req: Request, res: Response): Prom
   if (!pool) return;
 
   try {
-    const rows = await getAllDailyEntries(pool);
+    const rows = await processGetAllDailyEntries(pool);
+    console.log('✅ GET /api/data/daily-entries');
     console.log('📤 GET /api/data/daily-entries');
     sendSuccess(res, rows);
   } catch (error) {

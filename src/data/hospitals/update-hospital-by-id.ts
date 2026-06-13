@@ -1,11 +1,6 @@
 import type { Pool } from 'pg';
 import type { Hospital, UpdateHospitalInput } from './types';
 
-const optionalText = (value: string | null | undefined): string | null => {
-  const trimmed = value?.trim();
-  return trimmed ? trimmed : null;
-};
-
 /**
  * Updates a hospital by id.
  */
@@ -14,31 +9,30 @@ export const updateHospitalById = async (
   id: string,
   input: UpdateHospitalInput,
 ): Promise<Hospital> => {
+  console.log('💾 updateHospitalById');
   const sets: string[] = ['updated_at = now()'];
   const values: (string | null)[] = [];
   let param = 1;
 
   if (input.name !== undefined) {
-    const name = input.name.trim();
-    if (!name) throw new Error('name cannot be empty');
     sets.push(`name = $${param++}`);
-    values.push(name);
+    values.push(input.name);
   }
   if (input.address !== undefined) {
     sets.push(`address = $${param++}`);
-    values.push(optionalText(input.address));
+    values.push(input.address);
   }
   if (input.email !== undefined) {
     sets.push(`email = $${param++}`);
-    values.push(optionalText(input.email));
+    values.push(input.email);
   }
   if (input.phone !== undefined) {
     sets.push(`phone = $${param++}`);
-    values.push(optionalText(input.phone));
+    values.push(input.phone);
   }
   if (input.notes !== undefined) {
     sets.push(`notes = $${param++}`);
-    values.push(optionalText(input.notes));
+    values.push(input.notes);
   }
 
   values.push(id);

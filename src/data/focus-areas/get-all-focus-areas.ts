@@ -5,6 +5,7 @@ import type { FocusArea } from './types';
  * Loads all focus areas ordered by name ascending.
  */
 export const getAllFocusAreas = async (pool: Pool): Promise<FocusArea[]> => {
+  console.log('💾 getAllFocusAreas');
   try {
     const result = await pool.query<FocusArea>(
       'SELECT * FROM focus_areas ORDER BY name ASC',

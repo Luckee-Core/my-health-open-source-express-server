@@ -1,4 +1,3 @@
-export { assertFocusAreaExists } from './assert-focus-area-exists';
 export { createDailyEntry } from './create-daily-entry';
 export { deleteDailyEntryById } from './delete-daily-entry-by-id';
 export { getAllDailyEntries } from './get-all-daily-entries';

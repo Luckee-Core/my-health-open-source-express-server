@@ -5,6 +5,7 @@ import type { Specialty } from './types';
  * Loads all specialties ordered by name.
  */
 export const getAllSpecialties = async (pool: Pool): Promise<Specialty[]> => {
+  console.log('💾 getAllSpecialties');
   try {
     const result = await pool.query<Specialty>(
       'SELECT * FROM specialties ORDER BY name ASC',

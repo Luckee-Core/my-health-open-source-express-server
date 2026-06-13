@@ -9,15 +9,14 @@ export const updateSpecialtyById = async (
   id: string,
   input: UpdateSpecialtyInput,
 ): Promise<Specialty> => {
+  console.log('💾 updateSpecialtyById');
   const sets: string[] = ['updated_at = now()'];
   const values: string[] = [];
   let param = 1;
 
   if (input.name !== undefined) {
-    const name = input.name.trim();
-    if (!name) throw new Error('name cannot be empty');
     sets.push(`name = $${param++}`);
-    values.push(name);
+    values.push(input.name);
   }
 
   values.push(id);

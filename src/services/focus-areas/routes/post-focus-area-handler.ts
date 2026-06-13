@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createFocusArea } from '../../../data/focus-areas';
+import { processCreateFocusArea } from '../process-create-focus-area';
 import type { CreateFocusAreaInput } from '../../../data/focus-areas';
 import {
   requirePgPool,
@@ -23,7 +23,8 @@ export const postFocusAreaHandler = async (req: Request, res: Response): Promise
   }
 
   try {
-    const created = await createFocusArea(pool, body);
+    const created = await processCreateFocusArea(pool, body);
+    console.log('✅ POST /api/data/focus-areas');
     console.log('📤 POST /api/data/focus-areas');
     sendSuccess(res, created);
   } catch (error) {

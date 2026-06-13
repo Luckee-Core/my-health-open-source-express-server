@@ -5,10 +5,10 @@
 
 import { Express } from 'express';
 
-interface ServerConfig {
+type ServerConfig = {
   port: number;
   environment: string;
-}
+};
 
 export const startServer = (app: Express, config: ServerConfig): void => {
   const { port, environment } = config;

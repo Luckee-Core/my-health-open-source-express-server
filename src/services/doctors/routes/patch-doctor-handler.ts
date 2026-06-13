@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { updateDoctorById } from '../../../data/doctors';
+import { processUpdateDoctorById } from '../process-update-doctor-by-id';
 import type { UpdateDoctorInput } from '../../../data/doctors';
 import {
   parseRouteId,
@@ -24,7 +24,8 @@ export const patchDoctorHandler = async (req: Request, res: Response): Promise<v
   }
 
   try {
-    const updated = await updateDoctorById(pool, id, req.body as UpdateDoctorInput);
+    const updated = await processUpdateDoctorById(pool, id, req.body as UpdateDoctorInput);
+    console.log('✅ PATCH /api/data/doctors/:id');
     console.log('📤 PATCH /api/data/doctors/:id');
     sendSuccess(res, updated);
   } catch (error) {

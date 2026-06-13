@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { deleteAppointmentById } from '../../../data/appointments';
+import { processDeleteAppointmentById } from '../process-delete-appointment-by-id';
 import {
   parseRouteId,
   requirePgPool,
@@ -23,7 +23,8 @@ export const deleteAppointmentHandler = async (req: Request, res: Response): Pro
   }
 
   try {
-    await deleteAppointmentById(pool, id);
+    await processDeleteAppointmentById(pool, id);
+    console.log('✅ DELETE /api/data/appointments/:id');
     console.log('📤 DELETE /api/data/appointments/:id');
     sendSuccess(res, null);
   } catch (error) {

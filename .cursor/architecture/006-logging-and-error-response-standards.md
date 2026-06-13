@@ -164,6 +164,26 @@ Why incorrect:
 - Business logic: `processX` functions
 - Data access: `src/data/{entity}/` one CRUD function per file
 
+## Health endpoint exception
+
+`GET /api/health` is a **liveness probe** and intentionally does **not** use the `{ success, data }` envelope. It returns plain JSON:
+
+```typescript
+{
+  status: 'ok',
+  message: 'My Health Express Server is running',
+  timestamp: string;
+  environment: string;
+}
+```
+
+All other API handlers must use the standard success/error shapes above.
+
+## Unknown routes and global errors
+
+- Unknown routes: `400` with `{ success: false, error: "Cannot METHOD /path" }` (no extra `message` field)
+- Unhandled middleware errors: `500` with `{ success: false, error: string }` and `❌` emoji logging
+
 ## Related
 
 - See [Router Factory and Handler Pattern](./002-router-factory-and-handler-pattern.md)

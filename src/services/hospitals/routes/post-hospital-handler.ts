@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createHospital } from '../../../data/hospitals';
+import { processCreateHospital } from '../process-create-hospital';
 import type { CreateHospitalInput } from '../../../data/hospitals';
 import {
   requirePgPool,
@@ -23,7 +23,8 @@ export const postHospitalHandler = async (req: Request, res: Response): Promise<
   }
 
   try {
-    const created = await createHospital(pool, body);
+    const created = await processCreateHospital(pool, body);
+    console.log('✅ POST /api/data/hospitals');
     console.log('📤 POST /api/data/hospitals');
     sendSuccess(res, created);
   } catch (error) {

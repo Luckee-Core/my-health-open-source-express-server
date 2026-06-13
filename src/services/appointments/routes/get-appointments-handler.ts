@@ -1,6 +1,10 @@
 import type { Request, Response } from 'express';
-import { getAllAppointments } from '../../../data/appointments';
-import { requirePgPool, sendHandlerError, sendSuccess } from '../../../utils/http';
+import { processGetAllAppointments } from '../process-get-all-appointments';
+import {
+  requirePgPool,
+  sendHandlerError,
+  sendSuccess,
+} from '../../../utils/http';
 
 /**
  * Handles GET /api/data/appointments.
@@ -11,7 +15,8 @@ export const getAppointmentsHandler = async (_req: Request, res: Response): Prom
   if (!pool) return;
 
   try {
-    const rows = await getAllAppointments(pool);
+    const rows = await processGetAllAppointments(pool);
+    console.log('✅ GET /api/data/appointments');
     console.log('📤 GET /api/data/appointments');
     sendSuccess(res, rows);
   } catch (error) {

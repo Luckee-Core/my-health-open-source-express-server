@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createSpecialty } from '../../../data/specialties';
+import { processCreateSpecialty } from '../process-create-specialty';
 import type { CreateSpecialtyInput } from '../../../data/specialties';
 import {
   requirePgPool,
@@ -23,7 +23,8 @@ export const postSpecialtyHandler = async (req: Request, res: Response): Promise
   }
 
   try {
-    const created = await createSpecialty(pool, body);
+    const created = await processCreateSpecialty(pool, body);
+    console.log('✅ POST /api/data/specialties');
     console.log('📤 POST /api/data/specialties');
     sendSuccess(res, created);
   } catch (error) {

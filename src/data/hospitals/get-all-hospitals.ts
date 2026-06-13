@@ -5,6 +5,7 @@ import type { Hospital } from './types';
  * Loads all hospitals ordered by name.
  */
 export const getAllHospitals = async (pool: Pool): Promise<Hospital[]> => {
+  console.log('💾 getAllHospitals');
   try {
     const result = await pool.query<Hospital>(
       'SELECT * FROM hospitals ORDER BY name ASC',

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { updateDailyEntryById } from '../../../data/daily-entries';
+import { processUpdateDailyEntryById } from '../process-update-daily-entry-by-id';
 import type { UpdateDailyEntryInput } from '../../../data/daily-entries';
 import {
   parseRouteId,
@@ -24,7 +24,8 @@ export const patchDailyEntryHandler = async (req: Request, res: Response): Promi
   }
 
   try {
-    const updated = await updateDailyEntryById(pool, id, req.body as UpdateDailyEntryInput);
+    const updated = await processUpdateDailyEntryById(pool, id, req.body as UpdateDailyEntryInput);
+    console.log('✅ PATCH /api/data/daily-entries/:id');
     console.log('📤 PATCH /api/data/daily-entries/:id');
     sendSuccess(res, updated);
   } catch (error) {

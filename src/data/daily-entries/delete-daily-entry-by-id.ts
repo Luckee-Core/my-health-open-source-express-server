@@ -4,6 +4,7 @@ import type { Pool } from 'pg';
  * Deletes a daily entry by id.
  */
 export const deleteDailyEntryById = async (pool: Pool, id: string): Promise<void> => {
+  console.log('💾 deleteDailyEntryById');
   try {
     await pool.query('DELETE FROM daily_entries WHERE id = $1', [id]);
   } catch (error) {

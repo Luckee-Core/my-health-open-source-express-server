@@ -4,6 +4,7 @@ import type { Pool } from 'pg';
  * Deletes a focus area by id.
  */
 export const deleteFocusAreaById = async (pool: Pool, id: string): Promise<void> => {
+  console.log('💾 deleteFocusAreaById');
   try {
     await pool.query('DELETE FROM focus_areas WHERE id = $1', [id]);
   } catch (error) {

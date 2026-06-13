@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { getAllHospitals } from '../../../data/hospitals';
+import { processGetAllHospitals } from '../process-get-all-hospitals';
 import {
   requirePgPool,
   sendHandlerError,
@@ -15,7 +15,8 @@ export const getHospitalsHandler = async (_req: Request, res: Response): Promise
   if (!pool) return;
 
   try {
-    const rows = await getAllHospitals(pool);
+    const rows = await processGetAllHospitals(pool);
+    console.log('✅ GET /api/data/hospitals');
     console.log('📤 GET /api/data/hospitals');
     sendSuccess(res, rows);
   } catch (error) {

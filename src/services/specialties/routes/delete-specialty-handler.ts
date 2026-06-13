@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { deleteSpecialtyById } from '../../../data/specialties';
+import { processDeleteSpecialtyById } from '../process-delete-specialty-by-id';
 import {
   parseRouteId,
   requirePgPool,
@@ -23,7 +23,8 @@ export const deleteSpecialtyHandler = async (req: Request, res: Response): Promi
   }
 
   try {
-    await deleteSpecialtyById(pool, id);
+    await processDeleteSpecialtyById(pool, id);
+    console.log('✅ DELETE /api/data/specialties/:id');
     console.log('📤 DELETE /api/data/specialties/:id');
     sendSuccess(res, null);
   } catch (error) {

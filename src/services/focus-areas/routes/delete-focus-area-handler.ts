@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { deleteFocusAreaById } from '../../../data/focus-areas';
+import { processDeleteFocusAreaById } from '../process-delete-focus-area-by-id';
 import {
   parseRouteId,
   requirePgPool,
@@ -23,7 +23,8 @@ export const deleteFocusAreaHandler = async (req: Request, res: Response): Promi
   }
 
   try {
-    await deleteFocusAreaById(pool, id);
+    await processDeleteFocusAreaById(pool, id);
+    console.log('✅ DELETE /api/data/focus-areas/:id');
     console.log('📤 DELETE /api/data/focus-areas/:id');
     sendSuccess(res, null);
   } catch (error) {

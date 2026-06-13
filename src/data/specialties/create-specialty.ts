@@ -8,15 +8,11 @@ export const createSpecialty = async (
   pool: Pool,
   input: CreateSpecialtyInput,
 ): Promise<Specialty> => {
-  const name = input.name?.trim() ?? '';
-  if (!name) {
-    throw new Error('name is required');
-  }
-
+  console.log('💾 createSpecialty');
   try {
     const result = await pool.query<Specialty>(
       'INSERT INTO specialties (name) VALUES ($1) RETURNING *',
-      [name],
+      [input.name],
     );
     return result.rows[0];
   } catch (error) {

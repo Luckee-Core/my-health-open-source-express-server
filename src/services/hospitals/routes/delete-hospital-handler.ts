@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { deleteHospitalById } from '../../../data/hospitals';
+import { processDeleteHospitalById } from '../process-delete-hospital-by-id';
 import {
   parseRouteId,
   requirePgPool,
@@ -23,7 +23,8 @@ export const deleteHospitalHandler = async (req: Request, res: Response): Promis
   }
 
   try {
-    await deleteHospitalById(pool, id);
+    await processDeleteHospitalById(pool, id);
+    console.log('✅ DELETE /api/data/hospitals/:id');
     console.log('📤 DELETE /api/data/hospitals/:id');
     sendSuccess(res, null);
   } catch (error) {

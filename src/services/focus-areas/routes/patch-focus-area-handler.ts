@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { updateFocusAreaById } from '../../../data/focus-areas';
+import { processUpdateFocusAreaById } from '../process-update-focus-area-by-id';
 import type { UpdateFocusAreaInput } from '../../../data/focus-areas';
 import {
   parseRouteId,
@@ -24,7 +24,8 @@ export const patchFocusAreaHandler = async (req: Request, res: Response): Promis
   }
 
   try {
-    const updated = await updateFocusAreaById(pool, id, req.body as UpdateFocusAreaInput);
+    const updated = await processUpdateFocusAreaById(pool, id, req.body as UpdateFocusAreaInput);
+    console.log('✅ PATCH /api/data/focus-areas/:id');
     console.log('📤 PATCH /api/data/focus-areas/:id');
     sendSuccess(res, updated);
   } catch (error) {

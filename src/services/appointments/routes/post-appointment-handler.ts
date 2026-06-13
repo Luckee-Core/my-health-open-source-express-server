@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createAppointment } from '../../../data/appointments';
+import { processCreateAppointment } from '../process-create-appointment';
 import type { CreateAppointmentInput } from '../../../data/appointments';
 import {
   requirePgPool,
@@ -27,7 +27,8 @@ export const postAppointmentHandler = async (req: Request, res: Response): Promi
   }
 
   try {
-    const created = await createAppointment(pool, body);
+    const created = await processCreateAppointment(pool, body);
+    console.log('✅ POST /api/data/appointments');
     console.log('📤 POST /api/data/appointments');
     sendSuccess(res, created);
   } catch (error) {

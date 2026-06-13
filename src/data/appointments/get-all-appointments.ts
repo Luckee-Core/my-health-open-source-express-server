@@ -5,6 +5,7 @@ import type { Appointment } from './types';
  * Loads all appointments ordered by scheduled_at ascending.
  */
 export const getAllAppointments = async (pool: Pool): Promise<Appointment[]> => {
+  console.log('💾 getAllAppointments');
   try {
     const result = await pool.query<Appointment>(
       'SELECT * FROM appointments ORDER BY scheduled_at ASC',

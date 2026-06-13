@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createDoctor } from '../../../data/doctors';
+import { processCreateDoctor } from '../process-create-doctor';
 import type { CreateDoctorInput } from '../../../data/doctors';
 import {
   requirePgPool,
@@ -31,7 +31,8 @@ export const postDoctorHandler = async (req: Request, res: Response): Promise<vo
   }
 
   try {
-    const created = await createDoctor(pool, body);
+    const created = await processCreateDoctor(pool, body);
+    console.log('✅ POST /api/data/doctors');
     console.log('📤 POST /api/data/doctors');
     sendSuccess(res, created);
   } catch (error) {
