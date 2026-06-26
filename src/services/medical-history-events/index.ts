@@ -1,0 +1,1 @@
+export { createMedicalHistoryEventsRouter } from './router';

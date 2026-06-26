@@ -62,10 +62,48 @@ const dailyEntryExample = {
   updated_at: ts,
 };
 
+const medicalHistoryEventExample = {
+  id: "uuid",
+  event_date: "2020-06-15",
+  title: "Endoscopic resection — skull base chondrosarcoma",
+  category: "surgery",
+  description: "Transnasal approach; most of tumor removed.",
+  doctor_id: "uuid",
+  appointment_id: null,
+  focus_area_id: "uuid",
+  created_at: ts,
+  updated_at: ts,
+};
+
+const symptomLogExample = {
+  id: "uuid",
+  recorded_at: ts,
+  name: "Voice fatigue",
+  severity: 6,
+  triggers: "prolonged talking",
+  duration_minutes: null,
+  notes: "Hoarse after 15 minutes of conversation",
+  focus_area_id: "uuid",
+  created_at: ts,
+  updated_at: ts,
+};
+
+const researchNoteExample = {
+  id: "uuid",
+  title: "MRI skull base interpretation",
+  category: "imaging",
+  source_url: null,
+  summary: "Incomplete study; concerning for chondrosarcoma recurrence",
+  content: "Full pasted notes or report text…",
+  focus_area_id: "uuid",
+  created_at: ts,
+  updated_at: ts,
+};
+
 const buildOverviewGroup = (): ApiDocsGroup => ({
   name: "Overview",
   description: [
-    "REST API for the open-source My Health app. On-device Postgres stores hospitals, specialties, doctors, appointments, focus areas, and daily journal entries; this Express server exposes CRUD over HTTP for the Next.js dashboard or any client.",
+    "REST API for the open-source My Health app. On-device Postgres stores hospitals, specialties, doctors, appointments, focus areas, daily journal entries, medical history events, symptom logs, and research notes; this Express server exposes CRUD over HTTP for the Next.js dashboard or any client.",
     "Route layout: `/api/data/*` — REST entity CRUD (`GET/POST /`, `PATCH/DELETE /:id`); `GET /api-docs.json` — this catalog. There is no `GET /:id` single-entity fetch — list all rows and filter client-side, or use PATCH/DELETE with a known id.",
     "Typical flow: create hospitals and specialties → add doctors (linked to hospital + specialty) → schedule appointments → define focus areas → log daily entries against a focus area and date.",
     "Success JSON: `{ success: true, data }`. Error JSON: `{ success: false, error: string }`. DELETE returns `{ success: true, data: null }`. OSS default has no authentication — bind to localhost for trusted local dev. Requires `DATABASE_URL` on Express.",
@@ -191,6 +229,43 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
       dailyEntryExample,
       { entry_date: "2026-01-15", focus_area_id: "uuid", notes: "Slept 7 hours" },
       { notes: "Updated journal note" },
+    ),
+    buildEntityGroup(
+      "Medical history events",
+      "Timeline of diagnoses, surgeries, imaging, and other significant health milestones.",
+      "/api/data/medical-history-events",
+      "medical history event",
+      medicalHistoryEventExample,
+      {
+        event_date: "2020-06-15",
+        title: "Endoscopic resection",
+        category: "surgery",
+        description: "Skull base chondrosarcoma",
+      },
+      { description: "Updated treatment notes" },
+    ),
+    buildEntityGroup(
+      "Symptom logs",
+      "Point-in-time symptom episodes with optional severity, triggers, and duration.",
+      "/api/data/symptom-logs",
+      "symptom log",
+      symptomLogExample,
+      { name: "Voice fatigue", severity: 6, triggers: "prolonged talking" },
+      { severity: 7, notes: "Worse in the evening" },
+    ),
+    buildEntityGroup(
+      "Research notes",
+      "Articles, imaging interpretation, doctor prep questions, and pasted reference material.",
+      "/api/data/research-notes",
+      "research note",
+      researchNoteExample,
+      {
+        title: "MRI skull base interpretation",
+        category: "imaging",
+        summary: "Concerning for recurrence",
+        content: "Full notes…",
+      },
+      { summary: "Updated summary" },
     ),
   ];
 

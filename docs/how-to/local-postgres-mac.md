@@ -16,6 +16,7 @@ createdb my_health
 export DATABASE_URL="postgresql://$(whoami)@127.0.0.1:5432/my_health"
 psql "$DATABASE_URL" -f migrations/001_hospitals_specialties_doctors_appointments.sql
 psql "$DATABASE_URL" -f migrations/002_focus_areas_daily_entries.sql
+psql "$DATABASE_URL" -f migrations/003_health_record.sql
 ```
 
 Set `DATABASE_URL` in `.env`, then `npm run dev`.

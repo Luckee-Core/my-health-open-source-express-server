@@ -14,6 +14,7 @@ Apply with `psql` against your `DATABASE_URL`:
 
 1. [001_hospitals_specialties_doctors_appointments.sql](../migrations/001_hospitals_specialties_doctors_appointments.sql)
 2. [002_focus_areas_daily_entries.sql](../migrations/002_focus_areas_daily_entries.sql)
+3. [003_health_record.sql](../migrations/003_health_record.sql) — requires 001 and 002 (`focus_areas`, `doctors`, `appointments` must exist)
 
 See [local-postgres-mac.md](./how-to/local-postgres-mac.md) for copy-paste commands.
 

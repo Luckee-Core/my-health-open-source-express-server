@@ -1,0 +1,1 @@
+export { createResearchNotesRouter } from './router';
