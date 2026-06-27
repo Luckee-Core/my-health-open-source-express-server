@@ -25,7 +25,7 @@ Scored against the [release readiness checklist](https://github.com/luckee/mento
 | 2.5 | Threat model | pass |
 | 2.6 | Wire contract filled | pass |
 | 2.7 | In-app OSS onboarding | pass (landing) |
-| 2.8 | Supabase runbook | pass |
+| 2.8 | Postgres runbook | pass — `migrations/` + local-postgres-mac.md |
 
 ## 3. Frontend shape
 
@@ -77,7 +77,7 @@ Scored against the [release readiness checklist](https://github.com/luckee/mento
 
 ## Manual verification
 
-- [ ] Express: `npm run dev` + `curl localhost:3009/api/health` (requires Supabase `.env`)
+- [ ] Express: `npm run dev` + `curl localhost:3009/api/health` (requires `DATABASE_URL` in `.env`)
 - [ ] Web: `NEXT_PUBLIC_API_URL=http://localhost:3009` + `npm run dev` + dashboard smoke
 
 ## Ship with debt (Rec items)

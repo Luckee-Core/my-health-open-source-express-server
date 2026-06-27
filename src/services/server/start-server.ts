@@ -22,6 +22,7 @@ export const startServer = (app: Express, config: ServerConfig): void => {
     console.log(`Port: ${port}`);
     console.log(`URL: http://localhost:${port}`);
     console.log(`Health Check: http://localhost:${port}/api/health`);
+    console.log(`Docs (web): http://localhost:3000/docs/api`);
     console.log('='.repeat(50));
     console.log('');
   });

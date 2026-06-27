@@ -7,8 +7,8 @@ Documented seam between the Next.js web app and the companion Express API.
 | Field | Value |
 |-------|-------|
 | **Product name** | My Health |
-| **Web repo** | https://github.com/matthewruiz/my-health-open-source |
-| **Express repo** | https://github.com/matthewruiz/my-health-open-source-express-server |
+| **Web repo** | https://github.com/Luckee-Core/my-health-open-source |
+| **Express repo** | https://github.com/Luckee-Core/my-health-open-source-express-server |
 | **Default web port** | 3000 |
 | **Default API port** | 3009 |
 | **API base env (web)** | `NEXT_PUBLIC_API_URL` (alias: checklist `NEXT_PUBLIC_SERVER_URL`) |
@@ -69,8 +69,13 @@ Each entity supports `GET /`, `POST /`, `PATCH /:id`, `DELETE /:id` under `/api/
 | Appointments | `/api/data/appointments` |
 | Focus areas | `/api/data/focus-areas` |
 | Daily entries | `/api/data/daily-entries` |
+| Medical history events | `/api/data/medical-history-events` |
+| Symptom logs | `/api/data/symptom-logs` |
+| Research notes | `/api/data/research-notes` |
 
 Aggregator: `src/services/my-health-data-service/router.ts`.
+
+**Database:** Local Postgres via `DATABASE_URL` — apply `migrations/001…003` (or hub Setup database). See [local-postgres-mac.md](../how-to/local-postgres-mac.md).
 
 ## 4. Setup verification
 

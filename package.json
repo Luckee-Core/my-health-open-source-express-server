@@ -5,12 +5,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matthewruiz/my-health-open-source-express-server.git"
+    "url": "https://github.com/Luckee-Core/my-health-open-source-express-server.git"
   },
   "bugs": {
-    "url": "https://github.com/matthewruiz/my-health-open-source-express-server/issues"
+    "url": "https://github.com/Luckee-Core/my-health-open-source-express-server/issues"
   },
-  "homepage": "https://github.com/matthewruiz/my-health-open-source-express-server#readme",
+  "homepage": "https://github.com/Luckee-Core/my-health-open-source-express-server#readme",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts",

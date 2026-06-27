@@ -1,12 +1,14 @@
 # My Health Express Server
 
-**TL;DR:** Thin Express API for the [My Health](https://github.com/matthewruiz/my-health-open-source) dashboard. On-device Postgres CRUD for hospitals, specialties, doctors, appointments, focus areas, and daily entries. Managed pool at startup; consistent `{ success, data }` JSON.
+**TL;DR:** Thin Express API for the [My Health](https://github.com/Luckee-Core/my-health-open-source) dashboard. On-device Postgres CRUD for nine entities. Managed pool at startup; consistent `{ success, data }` JSON.
 
 I split this out on purpose: the browser app should not hold database credentials, and I wanted entity HTTP separate from raw SQL. CRUD lives in `src/data/{table}/`; routers and handlers live in `src/services/{entity}/`.
 
-**Companion web repo:** [my-health-open-source](https://github.com/matthewruiz/my-health-open-source)
+**Companion web repo:** [my-health-open-source](https://github.com/Luckee-Core/my-health-open-source)
 
 **Wire contract:** [docs/oss/wire-contract.md](./docs/oss/wire-contract.md)
+
+**Pair quickstart:** [docs/oss-quickstart.md](./docs/oss-quickstart.md)
 
 **Local Postgres setup:** [docs/how-to/local-postgres-mac.md](./docs/how-to/local-postgres-mac.md)
 
@@ -15,7 +17,7 @@ I split this out on purpose: the browser app should not hold database credential
 ## What you get
 
 - TypeScript + Express 5
-- `/api/data` mounts for six entities (full CRUD each)
+- `/api/data` mounts for **nine** entities (full CRUD each)
 - Health at `/` and `/api/health`
 - Postgres via `getManagedPgPool()` — initialized once at boot, null → 500
 - SQL migrations in `migrations/` applied with `psql`
@@ -34,7 +36,7 @@ I split this out on purpose: the browser app should not hold database credential
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/matthewruiz/my-health-open-source-express-server.git
+git clone https://github.com/Luckee-Core/my-health-open-source-express-server.git
 cd my-health-open-source-express-server
 npm install
 ```
@@ -93,6 +95,9 @@ Everything under `/api/data`. Each entity: `GET /`, `POST /`, `PATCH /:id`, `DEL
 | Appointments | `/api/data/appointments` |
 | Focus areas | `/api/data/focus-areas` |
 | Daily entries | `/api/data/daily-entries` |
+| Medical history events | `/api/data/medical-history-events` |
+| Symptom logs | `/api/data/symptom-logs` |
+| Research notes | `/api/data/research-notes` |
 
 Health: `GET /` and `GET /api/health`
 
@@ -165,7 +170,7 @@ Report issues: [SECURITY.md](./SECURITY.md)
 
 ## Key takeaways
 
-1. **Apply both SQL files in order** before you wonder why focus areas fail.
+1. **Apply migrations `001` → `003`** (or `setup.sql`) before you wonder why health-record routes fail.
 2. **Port 3009** is the default everywhere — Express `PORT` and web `NEXT_PUBLIC_API_URL`.
 3. **Handlers stay thin** — validate, call data layer, return `{ success, error }`.
 4. **Pair changes with the web repo** when you add entities or rename paths.

@@ -1,34 +1,53 @@
 import express from 'express';
 import dotenv from 'dotenv';
 
+import { setupEarlyMiddleware, setupErrorHandling } from './src/services/middleware';
+import { initializeManagedPgPool } from './src/services/managed';
+import { createHealthRouter } from './src/services/health';
+import { createMyHealthDataService } from './src/services/my-health-data-service';
+import { createApiDocsRouter } from './src/services/api-docs';
+import { startServer } from './src/services/server';
+
 dotenv.config();
 
-const app = express();
-const PORT = Number(process.env.PORT) || 3009;
+const DEFAULT_PORT = 3009;
 
-import { setupEarlyMiddleware } from './src/services/middleware';
-setupEarlyMiddleware(app);
+const bootstrap = (): express.Application => {
+  console.log('🚀 Starting my-health-express-server bootstrap');
 
-import { initializeManagedPgPool } from './src/services/managed';
-initializeManagedPgPool();
+  const portFromEnv = Number(process.env.PORT);
+  const PORT =
+    Number.isFinite(portFromEnv) && portFromEnv > 0 ? portFromEnv : DEFAULT_PORT;
 
-import { createHealthRouter } from './src/services/health';
-app.use('/', createHealthRouter());
-app.use('/api/health', createHealthRouter());
+  const app = express();
 
-import { createMyHealthDataService } from './src/services/my-health-data-service';
-app.use('/api/data', createMyHealthDataService());
+  setupEarlyMiddleware(app);
+  initializeManagedPgPool();
 
-import { createApiDocsRouter } from './src/services/api-docs';
-app.use(createApiDocsRouter());
+  app.use('/', createHealthRouter());
+  app.use('/api/health', createHealthRouter());
 
-import { setupErrorHandling } from './src/services/middleware';
-setupErrorHandling(app);
+  app.use('/api/data', createMyHealthDataService());
+  app.use(createApiDocsRouter());
+  console.log('✅ [bootstrap] API docs mounted at GET /api-docs.json');
 
-import { startServer } from './src/services/server';
-startServer(app, {
-  port: PORT,
-  environment: process.env.NODE_ENV || 'development',
-});
+  setupErrorHandling(app);
 
-export default app;
+  startServer(app, {
+    port: PORT,
+    environment: process.env.NODE_ENV || 'development',
+  });
+
+  return app;
+};
+
+let app: express.Application;
+
+try {
+  app = bootstrap();
+} catch (err) {
+  console.error('❌ [bootstrap] Failed to start server', err);
+  process.exit(1);
+}
+
+export default app!;
