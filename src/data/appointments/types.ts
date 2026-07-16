@@ -9,6 +9,9 @@ export type Appointment = {
   reason: string | null;
   notes: string | null;
   completed_at: string | null;
+  source_system: string | null;
+  source_document_id: string | null;
+  source_entry_key: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -21,6 +24,9 @@ export type CreateAppointmentInput = {
   reason?: string | null;
   notes?: string | null;
   completed_at?: string | null;
+  source_system?: string | null;
+  source_document_id?: string | null;
+  source_entry_key?: string | null;
 };
 
 export type UpdateAppointmentInput = Partial<CreateAppointmentInput>;

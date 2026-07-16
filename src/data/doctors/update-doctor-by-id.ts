@@ -30,6 +30,30 @@ export const updateDoctorById = async (
     sets.push(`notes = $${param++}`);
     values.push(input.notes);
   }
+  if (input.npi !== undefined) {
+    sets.push(`npi = $${param++}`);
+    values.push(input.npi);
+  }
+  if (input.phone !== undefined) {
+    sets.push(`phone = $${param++}`);
+    values.push(input.phone);
+  }
+  if (input.fax !== undefined) {
+    sets.push(`fax = $${param++}`);
+    values.push(input.fax);
+  }
+  if (input.source_system !== undefined) {
+    sets.push(`source_system = $${param++}`);
+    values.push(input.source_system);
+  }
+  if (input.source_document_id !== undefined) {
+    sets.push(`source_document_id = $${param++}`);
+    values.push(input.source_document_id);
+  }
+  if (input.source_entry_key !== undefined) {
+    sets.push(`source_entry_key = $${param++}`);
+    values.push(input.source_entry_key);
+  }
 
   values.push(id);
 

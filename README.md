@@ -51,6 +51,13 @@ export DATABASE_URL="postgresql://$(whoami)@127.0.0.1:5432/my_health"
 psql "$DATABASE_URL" -f migrations/001_hospitals_specialties_doctors_appointments.sql
 psql "$DATABASE_URL" -f migrations/002_focus_areas_daily_entries.sql
 psql "$DATABASE_URL" -f migrations/003_health_record.sql
+psql "$DATABASE_URL" -f migrations/004_clinical_import_schema.sql
+```
+
+Or apply the full schema once:
+
+```bash
+psql "$DATABASE_URL" -f migrations/setup.sql
 ```
 
 ### 3. Environment
@@ -98,6 +105,17 @@ Everything under `/api/data`. Each entity: `GET /`, `POST /`, `PATCH /:id`, `DEL
 | Medical history events | `/api/data/medical-history-events` |
 | Symptom logs | `/api/data/symptom-logs` |
 | Research notes | `/api/data/research-notes` |
+| Allergies | `/api/data/allergies` |
+| Medications | `/api/data/medications` |
+| Conditions | `/api/data/conditions` |
+| Vital signs | `/api/data/vital-signs` |
+| Clinical results | `/api/data/clinical-results` |
+| Clinical notes | `/api/data/clinical-notes` |
+| Referrals | `/api/data/referrals` |
+| Insurance coverages | `/api/data/insurance-coverages` |
+| Health imports | `/api/data/health-imports` |
+
+Import: `POST /api/data/health-imports/preview` (multipart), `POST /api/data/health-imports/commit` (JSON `{ previewId }`).
 
 Health: `GET /` and `GET /api/health`
 
@@ -170,7 +188,7 @@ Report issues: [SECURITY.md](./SECURITY.md)
 
 ## Key takeaways
 
-1. **Apply migrations `001` → `003`** (or `setup.sql`) before you wonder why health-record routes fail.
+1. **Apply migrations `001` → `004`** (or `setup.sql`) before you wonder why health-record or import routes fail.
 2. **Port 3009** is the default everywhere — Express `PORT` and web `NEXT_PUBLIC_API_URL`.
 3. **Handlers stay thin** — validate, call data layer, return `{ success, error }`.
 4. **Pair changes with the web repo** when you add entities or rename paths.

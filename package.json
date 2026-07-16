@@ -19,16 +19,21 @@
     "build:watch": "tsc --watch"
   },
   "dependencies": {
+    "adm-zip": "^0.6.0",
     "cors": "^2.8.6",
-    "pg": "^8.16.3",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "fast-xml-parser": "^5.10.0",
+    "multer": "^2.2.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.8",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "@types/pg": "^8.15.5",
+    "@types/multer": "^2.2.0",
     "@types/node": "^25.9.1",
+    "@types/pg": "^8.15.5",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"

@@ -1,0 +1,1 @@
+export { createAllergiesRouter } from './router';

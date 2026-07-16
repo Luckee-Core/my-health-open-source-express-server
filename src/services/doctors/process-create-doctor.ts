@@ -28,5 +28,8 @@ export const processCreateDoctor = async (
     hospital_id: input.hospital_id,
     specialty_id: input.specialty_id,
     notes: optionalText(input.notes),
+    npi: optionalText(input.npi),
+    phone: optionalText(input.phone),
+    fax: optionalText(input.fax),
   });
 };

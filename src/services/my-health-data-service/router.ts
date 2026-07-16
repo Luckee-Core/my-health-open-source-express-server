@@ -1,13 +1,22 @@
 import { Router } from 'express';
+import { createAllergiesRouter } from '../allergies';
 import { createAppointmentsRouter } from '../appointments';
+import { createClinicalNotesRouter } from '../clinical-notes';
+import { createClinicalResultsRouter } from '../clinical-results';
+import { createConditionsRouter } from '../conditions';
 import { createDailyEntriesRouter } from '../daily-entries';
 import { createDoctorsRouter } from '../doctors';
 import { createFocusAreasRouter } from '../focus-areas';
+import { createHealthImportsRouter } from '../health-imports';
 import { createHospitalsRouter } from '../hospitals';
+import { createInsuranceCoveragesRouter } from '../insurance-coverages';
 import { createMedicalHistoryEventsRouter } from '../medical-history-events';
+import { createMedicationsRouter } from '../medications';
+import { createReferralsRouter } from '../referrals';
 import { createResearchNotesRouter } from '../research-notes';
 import { createSpecialtiesRouter } from '../specialties';
 import { createSymptomLogsRouter } from '../symptom-logs';
+import { createVitalSignsRouter } from '../vital-signs';
 
 /**
  * Aggregates all my-health data routers under /api/data.
@@ -23,5 +32,14 @@ export const createMyHealthDataService = (): Router => {
   router.use('/medical-history-events', createMedicalHistoryEventsRouter());
   router.use('/symptom-logs', createSymptomLogsRouter());
   router.use('/research-notes', createResearchNotesRouter());
+  router.use('/allergies', createAllergiesRouter());
+  router.use('/medications', createMedicationsRouter());
+  router.use('/conditions', createConditionsRouter());
+  router.use('/vital-signs', createVitalSignsRouter());
+  router.use('/clinical-results', createClinicalResultsRouter());
+  router.use('/clinical-notes', createClinicalNotesRouter());
+  router.use('/referrals', createReferralsRouter());
+  router.use('/insurance-coverages', createInsuranceCoveragesRouter());
+  router.use('/health-imports', createHealthImportsRouter());
   return router;
 };

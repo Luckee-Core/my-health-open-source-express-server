@@ -1,0 +1,1 @@
+export { createInsuranceCoveragesRouter } from './router';

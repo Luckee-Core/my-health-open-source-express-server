@@ -34,6 +34,9 @@ export const processUpdateDoctorById = async (
     normalized.specialty_id = input.specialty_id;
   }
   if (input.notes !== undefined) normalized.notes = optionalText(input.notes);
+  if (input.npi !== undefined) normalized.npi = optionalText(input.npi);
+  if (input.phone !== undefined) normalized.phone = optionalText(input.phone);
+  if (input.fax !== undefined) normalized.fax = optionalText(input.fax);
 
   return updateDoctorById(pool, id, normalized);
 };

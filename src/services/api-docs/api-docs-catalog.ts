@@ -267,10 +267,125 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
       },
       { summary: "Updated summary" },
     ),
+    buildEntityGroup(
+      "Allergies",
+      "Allergy substances, reactions, and criticality.",
+      "/api/data/allergies",
+      "allergy",
+      {
+        id: "uuid",
+        substance: "Codeine",
+        reaction: "Anaphylaxis",
+        criticality: "High",
+        status: "active",
+        notes: null,
+        created_at: ts,
+        updated_at: ts,
+      },
+      { substance: "Peanut", reaction: "Anaphylaxis", criticality: "High" },
+      { status: "inactive" },
+    ),
+    buildEntityGroup(
+      "Medications",
+      "Active and stopped medications with instructions.",
+      "/api/data/medications",
+      "medication",
+      {
+        id: "uuid",
+        name: "pantoprazole",
+        instructions: "Take by mouth",
+        started_on: null,
+        status: "active",
+        doctor_id: null,
+        notes: null,
+        created_at: ts,
+        updated_at: ts,
+      },
+      { name: "ondansetron", instructions: "4 mg as needed" },
+      { status: "stopped" },
+    ),
+    buildEntityGroup(
+      "Conditions",
+      "Problem list (active/resolved conditions).",
+      "/api/data/conditions",
+      "condition",
+      {
+        id: "uuid",
+        name: "Bone cancer",
+        status: "active",
+        noted_on: "2020-12-10",
+        diagnosed_on: null,
+        focus_area_id: null,
+        notes: null,
+        created_at: ts,
+        updated_at: ts,
+      },
+      { name: "Low blood phosphate", status: "active" },
+      { status: "resolved" },
+    ),
+    {
+      name: "Health imports",
+      description:
+        "C-CDA Health Summary import. Preview uploads a zip/XML (multipart field `file`); commit applies the server-stored draft by previewId. PDF bytes are ignored in v1.",
+      endpoints: [
+        {
+          method: "POST",
+          path: "/api/data/health-imports/preview",
+          summary: "Parse C-CDA package and return summary + previewId",
+          responses: [
+            {
+              status: 200,
+              description: "Preview created",
+              example: {
+                success: true,
+                data: {
+                  previewId: "uuid",
+                  contentSha256: "hex",
+                  filename: "HealthSummary.zip",
+                  documentCount: 8,
+                  summary: { counts: { allergies: 3 }, samples: {} },
+                },
+              },
+            },
+          ],
+        },
+        {
+          method: "POST",
+          path: "/api/data/health-imports/commit",
+          summary: "Commit a previewed import by previewId",
+          requestBody: {
+            contentType: "application/json",
+            example: { previewId: "uuid" },
+          },
+          responses: [
+            {
+              status: 200,
+              description: "Import committed",
+              example: {
+                success: true,
+                data: { import: { id: "uuid", status: "committed" }, counts: { allergies: 3 } },
+              },
+            },
+          ],
+        },
+        {
+          method: "GET",
+          path: "/api/data/health-imports",
+          summary: "List import history",
+          responses: [
+            {
+              status: 200,
+              description: "Import rows",
+              example: { success: true, data: [] },
+            },
+          ],
+        },
+      ],
+    },
   ];
 
   return {
-    version: "1.0.0",
+    version: "1.1.0",
     baseUrl,
     responseEnvelope: '{ "success": true, "data": T } | { "success": false, "error": string }',
     groups,

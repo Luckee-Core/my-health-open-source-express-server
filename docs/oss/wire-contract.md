@@ -72,10 +72,30 @@ Each entity supports `GET /`, `POST /`, `PATCH /:id`, `DELETE /:id` under `/api/
 | Medical history events | `/api/data/medical-history-events` |
 | Symptom logs | `/api/data/symptom-logs` |
 | Research notes | `/api/data/research-notes` |
+| Allergies | `/api/data/allergies` |
+| Medications | `/api/data/medications` |
+| Conditions | `/api/data/conditions` |
+| Vital signs | `/api/data/vital-signs` |
+| Clinical results | `/api/data/clinical-results` |
+| Clinical notes | `/api/data/clinical-notes` |
+| Referrals | `/api/data/referrals` |
+| Insurance coverages | `/api/data/insurance-coverages` |
+| Health imports | `/api/data/health-imports` |
+
+### Health summary import (C-CDA)
+
+| Method | Path | Body | Notes |
+|--------|------|------|-------|
+| `POST` | `/api/data/health-imports/preview` | multipart `file` (zip or XML, ≤25MB) | Parses C-CDA XML; stores full draft server-side; returns summary + `previewId` |
+| `POST` | `/api/data/health-imports/commit` | JSON `{ previewId }` | Transactional upsert by `(source_system, source_entry_key)`; clears draft |
+| `GET` | `/api/data/health-imports` | — | Import history |
+| `GET` | `/api/data/health-imports/:id` | — | One import metadata |
+
+PDF bytes inside a zip are ignored in v1 (XML is source of truth). See ADR 011.
 
 Aggregator: `src/services/my-health-data-service/router.ts`.
 
-**Database:** Local Postgres via `DATABASE_URL` — apply `migrations/001…003` (or hub Setup database). See [local-postgres-mac.md](../how-to/local-postgres-mac.md).
+**Database:** Local Postgres via `DATABASE_URL` — apply `migrations/001…004` (or `setup.sql`). See [local-postgres-mac.md](../how-to/local-postgres-mac.md).
 
 ## 4. Setup verification
 
@@ -84,7 +104,7 @@ Aggregator: `src/services/my-health-data-service/router.ts`.
 ```bash
 cp .env.example .env
 # Fill DATABASE_URL (see docs/how-to/local-postgres-mac.md)
-# Apply migrations/*.sql in order with psql
+# Apply migrations/*.sql in order with psql (001 → 004) or setup.sql
 npm install
 npm run dev
 curl http://localhost:3009/api/health
@@ -100,6 +120,7 @@ npm install
 npm run dev
 # Open http://localhost:3000 — landing and dashboard should load
 # Open http://localhost:3000/docs/api — API reference (Express must be running)
+# Open http://localhost:3000/health-import — C-CDA zip/XML import wizard
 ```
 
 ## 5. Governance
