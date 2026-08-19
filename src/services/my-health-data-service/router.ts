@@ -14,7 +14,9 @@ import { createMedicalHistoryEventsRouter } from '../medical-history-events';
 import { createMedicationsRouter } from '../medications';
 import { createReferralsRouter } from '../referrals';
 import { createResearchNotesRouter } from '../research-notes';
+import { createSourceInstancesRouter, createSourceSystemsRouter } from '../source-instances';
 import { createSpecialtiesRouter } from '../specialties';
+import { createSymptomDefinitionsRouter } from '../symptom-definitions';
 import { createSymptomLogsRouter } from '../symptom-logs';
 import { createVitalSignsRouter } from '../vital-signs';
 
@@ -31,6 +33,9 @@ export const createMyHealthDataService = (): Router => {
   router.use('/daily-entries', createDailyEntriesRouter());
   router.use('/medical-history-events', createMedicalHistoryEventsRouter());
   router.use('/symptom-logs', createSymptomLogsRouter());
+  router.use('/symptom-definitions', createSymptomDefinitionsRouter());
+  router.use('/source-instances', createSourceInstancesRouter());
+  router.use('/source-systems', createSourceSystemsRouter());
   router.use('/research-notes', createResearchNotesRouter());
   router.use('/allergies', createAllergiesRouter());
   router.use('/medications', createMedicationsRouter());
