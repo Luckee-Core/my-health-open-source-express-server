@@ -6,6 +6,7 @@ import { initializeManagedPgPool } from './src/services/managed';
 import { createHealthRouter } from './src/services/health';
 import { createMyHealthDataService } from './src/services/my-health-data-service';
 import { createApiDocsRouter } from './src/services/api-docs';
+import { createAiRouter } from './src/services/ai';
 import { startServer } from './src/services/server';
 
 dotenv.config();
@@ -28,6 +29,7 @@ const bootstrap = (): express.Application => {
   app.use('/api/health', createHealthRouter());
 
   app.use('/api/data', createMyHealthDataService());
+  app.use('/api/ai', createAiRouter());
   app.use(createApiDocsRouter());
   console.log('✅ [bootstrap] API docs mounted at GET /api-docs.json');
 

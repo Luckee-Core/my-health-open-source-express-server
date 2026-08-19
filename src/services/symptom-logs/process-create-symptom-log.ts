@@ -37,5 +37,7 @@ export const processCreateSymptomLog = async (
     duration_minutes: parseDurationMinutes(input.duration_minutes),
     notes: optionalText(input.notes),
     focus_area_id: optionalId(input.focus_area_id),
+    symptom_definition_id: optionalId(input.symptom_definition_id),
+    time_period: input.time_period ?? null,
   });
 };

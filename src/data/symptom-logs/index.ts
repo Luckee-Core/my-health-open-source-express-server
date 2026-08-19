@@ -1,3 +1,4 @@
+export { batchCreateSymptomLogs } from './batch-create-symptom-logs';
 export { createSymptomLog } from './create-symptom-log';
 export { deleteSymptomLogById } from './delete-symptom-log-by-id';
 export { getAllSymptomLogs } from './get-all-symptom-logs';
