@@ -115,9 +115,9 @@ Merge rules (to refine in implementation):
 
 ## Entity tables (structured fields only)
 
-Existing tables (`allergies`, `medications`, `conditions`, `vital_signs`, `clinical_results`, `clinical_notes`, `referrals`, `insurance_coverages`, `medical_history_events`, `daily_entries`, `focus_areas`, …) keep **typed columns only**.
+Existing tables (`allergies`, `medications`, `conditions`, `vital_signs`, `clinical_results`, `clinical_notes`, `referrals`, `insurance_coverages`, `medical_history_events`, **`symptom_logs`**, `daily_entries`, `focus_areas`, …) keep **typed columns only**.
 
-Deprioritized for new UX: **`symptom_logs`** (see [vision doc](./vision-and-phasing.md)).
+**Symptom logs** and **daily entries** are both active product areas — structured rounds-style symptom tracking vs. narrative journal (see [vision doc](./vision-and-phasing.md)).
 
 Migration 004 provenance columns may remain during transition; new code should prefer junction + upload tables.
 
@@ -151,4 +151,4 @@ Extend **`hospitals`** for multi-facility tracking; avoid parallel “facility�
 - Exact dedup key: filename-only vs. content hash vs. both
 - Whether paste batches get a generated `original_filename` (e.g. `paste-2026-08-19T12:00:00.txt`)
 - Retiring `health_import_drafts.draft_json` in favor of relational staging or on-disk JSON files referenced by `document_uploads`
-- Symptom log table: freeze, migrate to journal, or drop in a future migration
+- Symptom log UX: time windows (last night / this morning), reusable symptom templates for rounding teams — may need additional tables (e.g. `symptom_definitions`, `symptom_log_periods`) in a future migration

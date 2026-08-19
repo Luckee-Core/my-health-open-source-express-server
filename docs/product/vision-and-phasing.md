@@ -86,12 +86,44 @@ This is the **source-of-truth builder**, not a daily screen.
 
 ### Symptom logs vs. daily journal
 
-**Decision: daily journal is the path forward.** Symptom logs are deprioritized.
+**Both are first-class.** They solve different problems and should stay separate.
 
-- **Daily journal** — ongoing narrative between visits (how you’re doing, focus areas, episodic notes). Matches “long-winded text” and reflection.
-- **Symptom logs** (legacy table in schema) — implied frequent structured symptom tracking (severity scales, etc.). That overlap is confusing and not the primary workflow described here.
+#### Symptom logs — structured, high-frequency clinical Q&A
 
-New UX work should invest in **journal / daily entries** (+ focus areas). Symptom logs may remain in schema for now but are not a product priority.
+**Why it matters:** During inpatient care (or intense outpatient periods), multiple teams ask the **same kinds of questions on a schedule** — often every morning:
+
+- Neurosurgery: head pain, facial pressure, how was last night?
+- Medicine team: nausea yesterday and overnight, pain scale, etc.
+- Other specialties: overlapping questions plus their own focus
+
+You need a **fast, repeatable way to answer** those questions with structured data (symptom name, severity 1–10, time window, notes) — not a long narrative every time.
+
+**Target UX (Phase 1 priority):**
+
+- **Morning check-in** — one screen to log today’s answers for your active symptom set (head pain, facial pressure, nausea, …).
+- **Time context** — distinguish *right now*, *last night*, *yesterday* (schema/UX TBD; may need `recorded_at` + period label or separate rows per window).
+- **Reusable symptom list** — teams keep asking the same things; don’t re-type symptom names daily.
+- Optional link to a **focus area** (already in schema via `focus_area_id`).
+- Later: “rounds summary” export — what every team asked this week, trend lines for severity.
+
+Current schema (`symptom_logs`): `recorded_at`, `name`, `severity` (1–10), `triggers`, `duration_minutes`, `notes`, `focus_area_id`.
+
+#### Daily journal — narrative, throughout the day
+
+**Why it matters:** Between (or in addition to) those clinical check-ins, you want a **running log** of what happened — appointments, how you felt at different times, questions for doctors, things to remember. Longer form, less structured, more “what happened today.”
+
+Works with **focus areas** for themes you’re tracking over weeks/months.
+
+#### How they work together
+
+| | Symptom logs | Daily journal |
+|---|--------------|---------------|
+| **Cadence** | Often daily (e.g. before rounds) | Anytime during the day |
+| **Shape** | Structured (symptom, severity, window) | Narrative text |
+| **Audience** | You → answering clinical teams | You → future you |
+| **Example** | “Head pain: 4/10, worse last night” | “PT came at 2pm; asked about discharge timeline” |
+
+Do not merge these into one feature. Dashboard can show **both**: “today’s symptom check-in” + “recent journal entries.”
 
 ### Research (deferred)
 
@@ -119,7 +151,8 @@ Concept: chat grounded in **your** stored data — pick a scope (a condition, me
 - Care team: hospitals, specialties, doctors
 - Appointments
 - Allergies, medications, conditions — **manual forms**
-- Daily journal + focus areas
+- **Symptom logs** — structured daily/rounds check-in (high priority for inpatient-style tracking)
+- **Daily journal** + focus areas — narrative log throughout the day
 - Basic paste → structure for **medications and conditions** (AI via Express, review step)
 - Provenance tables + junction design started (see data model doc)
 
