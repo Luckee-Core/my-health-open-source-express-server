@@ -11,6 +11,7 @@ import { createHealthImportsRouter } from '../health-imports';
 import { createHospitalsRouter } from '../hospitals';
 import { createInsuranceCoveragesRouter } from '../insurance-coverages';
 import { createMedicalHistoryEventsRouter } from '../medical-history-events';
+import { createMedicationDoseRemindersRouter } from '../medication-dose-reminders';
 import { createMedicationsRouter } from '../medications';
 import { createReferralsRouter } from '../referrals';
 import { createResearchNotesRouter } from '../research-notes';
@@ -39,6 +40,7 @@ export const createMyHealthDataService = (): Router => {
   router.use('/research-notes', createResearchNotesRouter());
   router.use('/allergies', createAllergiesRouter());
   router.use('/medications', createMedicationsRouter());
+  router.use('/medication-dose-reminders', createMedicationDoseRemindersRouter());
   router.use('/conditions', createConditionsRouter());
   router.use('/vital-signs', createVitalSignsRouter());
   router.use('/clinical-results', createClinicalResultsRouter());
