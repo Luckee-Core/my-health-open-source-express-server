@@ -1,4 +1,5 @@
 import type { Pool } from 'pg';
+import { syncAllMedicationDoseSchedules } from '../../services/medications/sync-medication-dose-schedule';
 
 export type MedicationDoseReminderStatus = 'due' | 'waiting';
 
@@ -25,6 +26,8 @@ type ReminderRow = {
 export const listMedicationDoseReminders = async (
   pool: Pool,
 ): Promise<MedicationDoseReminder[]> => {
+  await syncAllMedicationDoseSchedules(pool);
+
   const result = await pool.query<ReminderRow>(
     `SELECT
        m.id AS medication_id,

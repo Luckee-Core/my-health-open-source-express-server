@@ -11,6 +11,7 @@ import {
 import { createClinicalRecordSource } from '../../data/clinical-record-sources/create-clinical-record-source';
 import { createCondition } from '../../data/conditions/create-condition';
 import { createMedication } from '../../data/medications/create-medication';
+import { syncMedicationDoseScheduleFromInstructions } from '../medications/sync-medication-dose-schedule';
 import {
   createDocumentUpload,
   findDocumentUploadBySha256,
@@ -132,6 +133,12 @@ export const processCommitExtractSession = async (pool: Pool, sessionId: string)
         source_document_id: uploadId,
         source_entry_key: proposal.id,
       });
+      await syncMedicationDoseScheduleFromInstructions(
+        pool,
+        med.id,
+        med.instructions,
+        med.status,
+      );
       await createClinicalRecordSource(pool, {
         entity_table: 'medications',
         entity_id: med.id,
