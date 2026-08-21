@@ -1,7 +1,13 @@
 import { Router } from 'express';
 import { deleteMedicationHandler } from './routes/delete-medication-handler';
 import { getMedicationsHandler } from './routes/get-medications-handler';
+import { getMedicationDoseScheduleHandler } from './routes/get-medication-dose-schedule-handler';
+import {
+  deleteMedicationDoseScheduleHandler,
+  putMedicationDoseScheduleHandler,
+} from './routes/medication-dose-schedule-handlers';
 import { patchMedicationHandler } from './routes/patch-medication-handler';
+import { postMedicationDoseLogHandler } from './routes/post-medication-dose-log-handler';
 import { postMedicationHandler } from './routes/post-medication-handler';
 
 /**
@@ -11,6 +17,10 @@ export const createMedicationsRouter = (): Router => {
   const router = Router();
   router.get('/', getMedicationsHandler);
   router.post('/', postMedicationHandler);
+  router.put('/:id/dose-schedule', putMedicationDoseScheduleHandler);
+  router.get('/:id/dose-schedule', getMedicationDoseScheduleHandler);
+  router.delete('/:id/dose-schedule', deleteMedicationDoseScheduleHandler);
+  router.post('/:id/dose-logs', postMedicationDoseLogHandler);
   router.patch('/:id', patchMedicationHandler);
   router.delete('/:id', deleteMedicationHandler);
   return router;

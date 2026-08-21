@@ -42,6 +42,14 @@ export const updateSymptomLogById = async (
     sets.push(`focus_area_id = $${param++}`);
     values.push(input.focus_area_id);
   }
+  if (input.symptom_definition_id !== undefined) {
+    sets.push(`symptom_definition_id = $${param++}`);
+    values.push(input.symptom_definition_id);
+  }
+  if (input.time_period !== undefined) {
+    sets.push(`time_period = $${param++}`);
+    values.push(input.time_period);
+  }
 
   values.push(id);
 

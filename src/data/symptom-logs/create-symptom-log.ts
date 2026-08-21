@@ -12,9 +12,10 @@ export const createSymptomLog = async (
   try {
     const result = await pool.query<SymptomLog>(
       `INSERT INTO symptom_logs (
-         recorded_at, name, severity, triggers, duration_minutes, notes, focus_area_id
+         recorded_at, name, severity, triggers, duration_minutes, notes,
+         focus_area_id, symptom_definition_id, time_period
        )
-       VALUES (COALESCE($1::timestamptz, now()), $2, $3, $4, $5, $6, $7)
+       VALUES (COALESCE($1::timestamptz, now()), $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
       [
         input.recorded_at ?? null,
@@ -24,6 +25,8 @@ export const createSymptomLog = async (
         input.duration_minutes ?? null,
         input.notes ?? null,
         input.focus_area_id ?? null,
+        input.symptom_definition_id ?? null,
+        input.time_period ?? null,
       ],
     );
     return result.rows[0];

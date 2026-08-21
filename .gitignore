@@ -32,5 +32,6 @@ Thumbs.db
 
 # Misc
 .cache/
+data/uploads/
 
 chat_history/
