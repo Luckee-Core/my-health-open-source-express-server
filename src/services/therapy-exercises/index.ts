@@ -1,0 +1,1 @@
+export { createTherapyExercisesRouter } from './router';

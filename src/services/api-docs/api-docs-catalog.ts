@@ -323,6 +323,154 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
       { name: "Low blood phosphate", status: "active" },
       { status: "resolved" },
     ),
+    buildEntityGroup(
+      "Therapy exercises",
+      "Speech therapy homework prescriptions (timed attempts or sets/reps).",
+      "/api/data/therapy-exercises",
+      "therapy exercise",
+      {
+        id: "uuid",
+        discipline: "speech",
+        name: "Straw phonation",
+        instructions: "Hum through a straw for 5 seconds",
+        tracking_kind: "timed_attempts",
+        target_count: 10,
+        unit_size: 5,
+        frequency: "daily",
+        is_active: true,
+        sort_order: 0,
+        source: "manual",
+        import_id: null,
+        created_at: ts,
+        updated_at: ts,
+      },
+      {
+        name: "Straw phonation",
+        tracking_kind: "timed_attempts",
+        target_count: 10,
+        unit_size: 5,
+      },
+      { is_active: false },
+    ),
+    {
+      name: "Therapy exercise logs",
+      description:
+        "Daily progress per exercise. Use POST /increment to atomically add or subtract completed attempts/sets.",
+      endpoints: [
+        {
+          method: "GET",
+          path: "/api/data/therapy-exercise-logs",
+          summary: "List logs (optional ?log_date=YYYY-MM-DD)",
+          responses: [
+            {
+              status: 200,
+              description: "Log rows",
+              example: {
+                success: true,
+                data: [
+                  {
+                    id: "uuid",
+                    exercise_id: "uuid",
+                    log_date: "2026-01-15",
+                    completed_count: 3,
+                    notes: null,
+                    created_at: ts,
+                    updated_at: ts,
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          method: "POST",
+          path: "/api/data/therapy-exercise-logs/increment",
+          summary: "Upsert today's log and apply delta (+1 / -1)",
+          requestBody: {
+            contentType: "application/json",
+            example: { exercise_id: "uuid", log_date: "2026-01-15", delta: 1 },
+          },
+          responses: [
+            {
+              status: 200,
+              description: "Updated log",
+              example: {
+                success: true,
+                data: {
+                  id: "uuid",
+                  exercise_id: "uuid",
+                  log_date: "2026-01-15",
+                  completed_count: 4,
+                  notes: null,
+                  created_at: ts,
+                  updated_at: ts,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Therapy exercise imports",
+      description:
+        "Photo import for speech therapy homework. Preview uploads an image (JPEG/PNG/WebP); commit saves edited exercises.",
+      endpoints: [
+        {
+          method: "POST",
+          path: "/api/data/therapy-exercise-imports/preview",
+          summary: "Extract exercises from homework photo via vision AI",
+          responses: [
+            {
+              status: 200,
+              description: "Preview created",
+              example: {
+                success: true,
+                data: {
+                  previewId: "uuid",
+                  exercises: [
+                    {
+                      name: "Straw phonation",
+                      instructions: "10 attempts at 5 seconds",
+                      tracking_kind: "timed_attempts",
+                      target_count: 10,
+                      unit_size: 5,
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        },
+        {
+          method: "POST",
+          path: "/api/data/therapy-exercise-imports/commit",
+          summary: "Commit previewed exercises after user review",
+          requestBody: {
+            contentType: "application/json",
+            example: {
+              previewId: "uuid",
+              exercises: [
+                {
+                  name: "Straw phonation",
+                  instructions: "10 attempts at 5 seconds",
+                  tracking_kind: "timed_attempts",
+                  target_count: 10,
+                  unit_size: 5,
+                },
+              ],
+            },
+          },
+          responses: [
+            {
+              status: 200,
+              description: "Exercises created",
+              example: { success: true, data: { exercises: [] } },
+            },
+          ],
+        },
+      ],
+    },
     {
       name: "Health imports",
       description:

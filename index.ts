@@ -2,7 +2,10 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 import { setupEarlyMiddleware, setupErrorHandling } from './src/services/middleware';
-import { initializeManagedPgPool } from './src/services/managed';
+import {
+  initializeManagedAnthropicClient,
+  initializeManagedPgPool,
+} from './src/services/managed';
 import { createHealthRouter } from './src/services/health';
 import { createMyHealthDataService } from './src/services/my-health-data-service';
 import { createApiDocsRouter } from './src/services/api-docs';
@@ -23,6 +26,7 @@ const bootstrap = (): express.Application => {
 
   setupEarlyMiddleware(app);
   initializeManagedPgPool();
+  initializeManagedAnthropicClient();
 
   app.use('/', createHealthRouter());
   app.use('/api/health', createHealthRouter());

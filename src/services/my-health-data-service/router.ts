@@ -16,6 +16,9 @@ import { createReferralsRouter } from '../referrals';
 import { createResearchNotesRouter } from '../research-notes';
 import { createSpecialtiesRouter } from '../specialties';
 import { createSymptomLogsRouter } from '../symptom-logs';
+import { createTherapyExerciseImportsRouter } from '../therapy-exercise-imports';
+import { createTherapyExerciseLogsRouter } from '../therapy-exercise-logs';
+import { createTherapyExercisesRouter } from '../therapy-exercises';
 import { createVitalSignsRouter } from '../vital-signs';
 
 /**
@@ -41,5 +44,8 @@ export const createMyHealthDataService = (): Router => {
   router.use('/referrals', createReferralsRouter());
   router.use('/insurance-coverages', createInsuranceCoveragesRouter());
   router.use('/health-imports', createHealthImportsRouter());
+  router.use('/therapy-exercises', createTherapyExercisesRouter());
+  router.use('/therapy-exercise-logs', createTherapyExerciseLogsRouter());
+  router.use('/therapy-exercise-imports', createTherapyExerciseImportsRouter());
   return router;
 };
