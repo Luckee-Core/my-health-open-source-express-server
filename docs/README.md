@@ -4,6 +4,7 @@
 
 | Doc | Description |
 |-----|-------------|
+| [Product direction](./product/README.md) | UX vision, phasing, provenance & data model plans |
 | [Local Postgres (Mac)](./how-to/local-postgres-mac.md) | Homebrew install, `my_health` database, `psql` migrations |
 | [OSS wire contract](./oss/wire-contract.md) | Web + Express pairing, env vars, routes |
 | [OSS governance](./oss/README.md) | Release checklist and audit guide links |
