@@ -12,9 +12,19 @@ Speech therapy homework has heterogeneous tracking: timed attempts (e.g. 10 × 5
 
 ### Tables
 
-- `therapy_exercises` — prescription (name, tracking_kind, target_count, unit_size, discipline, source)
-- `therapy_exercise_logs` — one row per `(exercise_id, log_date)` with `completed_count`
+- `therapy_exercises` — prescription (name, tracking_kind, target_count, unit_size, `frequency`, `is_active`, discipline, source)
+- `therapy_exercise_logs` — one row per `(exercise_id, log_date)` with `completed_count` and `skipped` (today only)
 - `therapy_exercise_imports` — preview/commit draft JSON (no long-term image storage)
+
+### Schedule (`frequency` + `is_active`)
+
+| Schedule | Fields | Daily remaining list |
+|----------|--------|----------------------|
+| Daily homework | `frequency='daily'`, `is_active=true` | Included (dashboard, morning check-in, speech therapy remaining) |
+| Therapy session only | `frequency='session'`, `is_active=true` | Excluded — still loggable on session days without a daily skip |
+| Paused | `is_active=false` | Excluded — logging disabled until reactivated |
+
+`frequency` is `daily` or `session`. Pause is `is_active`, not a third frequency value.
 
 ### Tracking kinds
 
@@ -23,17 +33,19 @@ Speech therapy homework has heterogeneous tracking: timed attempts (e.g. 10 × 5
 | `timed_attempts` | 10 attempts at 5s | `target_count=10`, `unit_size=5` |
 | `sets_reps` | 5 sets of 5 | `target_count=5`, `unit_size=5` |
 
-Done for the day when `completed_count >= target_count`.
+Done for the day when `completed_count` meets the tracking target (reps for `sets_reps`, attempts for timed holds). `skipped = true` hides a **daily** exercise from today's remaining list without changing `therapy_exercises.is_active` or `frequency`; it returns tomorrow. Use `frequency='session'` for exercises that only happen during a therapy visit so they are not skipped every other day.
 
 ### Increment endpoint
 
-`POST /api/data/therapy-exercise-logs/increment` with `{ exercise_id, log_date, delta }` atomically upserts and applies delta (floored at 0). Used by speech therapy page, dashboard, and morning check-in.
+`POST /api/data/therapy-exercise-logs/increment` with `{ exercise_id, log_date, delta }` atomically upserts and applies delta (floored at 0) and clears `skipped`. Used by speech therapy page, dashboard, and morning check-in.
+
+`POST /api/data/therapy-exercise-logs/skip` with `{ exercise_id, log_date, skipped }` marks or unmarks the exercise as not for today (e.g. waiting on nurse help).
 
 ### Photo import
 
 Two-step flow (like health-import ADR 011):
 
-1. **Preview** — multipart `file` (JPEG/PNG/WebP only; reject HEIC with 400) → Anthropic vision → `therapy_exercise_imports` draft
+1. **Preview** — multipart `file` (JPEG/PNG/WebP; web UI sends PNG) → downscale/JPEG-compress in memory to stay under Anthropic's 10 MB vision limit → three-table AI audit (ADR 013) → Anthropic vision → `therapy_exercise_imports` draft linked by `exchange_id`
 2. **Commit** — JSON `{ previewId, exercises }` (user-edited) → insert `therapy_exercises` rows, mark import committed, clear draft
 
 Images are memory-only during preview; never persisted after commit.

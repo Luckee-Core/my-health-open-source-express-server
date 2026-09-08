@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { ResearchNote } from './types';
+import type { ResearchNote } from '../../model/research-note';
 
 /**
  * Loads all research notes ordered by created_at descending.

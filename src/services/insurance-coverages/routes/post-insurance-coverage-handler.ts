@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateInsuranceCoverage } from '../process-create-insurance-coverage';
-import type { CreateInsuranceCoverageInput } from '../../../data/insurance-coverages';
+import type { CreateInsuranceCoverageInput } from '../../../model/insurance-coverage';
 import {
   requirePgPool,
   sendClientError,

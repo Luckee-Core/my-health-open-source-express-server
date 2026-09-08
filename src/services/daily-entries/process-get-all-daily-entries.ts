@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllDailyEntries } from '../../data/daily-entries/get-all-daily-entries';
-import type { DailyEntry } from '../../data/daily-entries/types';
+import type { DailyEntry } from '../../model/daily-entry';
 
 /**
  * Loads all daily entries.

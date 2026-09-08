@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateDoctorById } from '../process-update-doctor-by-id';
-import type { UpdateDoctorInput } from '../../../data/doctors';
+import type { UpdateDoctorInput } from '../../../model/doctor';
 import {
   parseRouteId,
   requirePgPool,

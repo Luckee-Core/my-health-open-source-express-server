@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { SymptomLog } from './types';
+import type { SymptomLog } from '../../model/symptom-log';
 
 /**
  * Loads all symptom logs ordered by recorded_at descending.

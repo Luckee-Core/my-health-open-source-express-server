@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { FocusArea, UpdateFocusAreaInput } from './types';
+import type { FocusArea, UpdateFocusAreaInput } from '../../model/focus-area';
 
 /**
  * Updates a focus area by id.

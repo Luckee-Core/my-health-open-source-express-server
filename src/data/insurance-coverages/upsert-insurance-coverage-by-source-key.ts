@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateInsuranceCoverageInput, InsuranceCoverage } from './types';
+import type { CreateInsuranceCoverageInput, InsuranceCoverage } from '../../model/insurance-coverage';
 
 type Queryable = Pool | PoolClient;
 

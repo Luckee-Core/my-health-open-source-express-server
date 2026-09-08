@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { InsuranceCoverage, UpdateInsuranceCoverageInput } from './types';
+import type { InsuranceCoverage, UpdateInsuranceCoverageInput } from '../../model/insurance-coverage';
 
 /**
  * Updates a InsuranceCoverage by id.

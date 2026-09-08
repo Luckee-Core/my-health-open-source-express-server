@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Medication } from './types';
+import type { Medication } from '../../model/medication';
 
 /**
  * Loads all medications.

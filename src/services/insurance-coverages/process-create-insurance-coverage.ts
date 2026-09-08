@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createInsuranceCoverage } from '../../data/insurance-coverages/create-insurance-coverage';
-import type { CreateInsuranceCoverageInput, InsuranceCoverage } from '../../data/insurance-coverages/types';
+import type { CreateInsuranceCoverageInput, InsuranceCoverage } from '../../model/insurance-coverage';
 
 /**
  * Creates a InsuranceCoverage after light validation.

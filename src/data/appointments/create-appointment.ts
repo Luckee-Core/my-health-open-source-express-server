@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Appointment, CreateAppointmentInput } from './types';
+import type { Appointment, CreateAppointmentInput } from '../../model/appointment';
 
 /**
  * Creates an appointment record.

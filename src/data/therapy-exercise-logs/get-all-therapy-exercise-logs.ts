@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { TherapyExerciseLog } from './types';
+import type { TherapyExerciseLog } from '../../model/therapy-exercise-log';
 
 type GetAllOptions = {
   log_date?: string;

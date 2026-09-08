@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateReferralInput, Referral } from './types';
+import type { CreateReferralInput, Referral } from '../../model/referral';
 
 type Queryable = Pool | PoolClient;
 

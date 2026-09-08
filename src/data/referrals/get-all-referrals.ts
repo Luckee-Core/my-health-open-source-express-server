@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Referral } from './types';
+import type { Referral } from '../../model/referral';
 
 /**
  * Loads all referrals.

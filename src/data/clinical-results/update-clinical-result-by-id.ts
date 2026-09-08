@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { ClinicalResult, UpdateClinicalResultInput } from './types';
+import type { ClinicalResult, UpdateClinicalResultInput } from '../../model/clinical-result';
 
 /**
  * Updates a ClinicalResult by id.

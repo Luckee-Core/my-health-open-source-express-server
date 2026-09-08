@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateVitalSign } from '../process-create-vital-sign';
-import type { CreateVitalSignInput } from '../../../data/vital-signs';
+import type { CreateVitalSignInput } from '../../../model/vital-sign';
 import {
   requirePgPool,
   sendClientError,

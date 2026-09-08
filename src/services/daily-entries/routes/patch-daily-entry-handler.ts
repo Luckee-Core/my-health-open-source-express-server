@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateDailyEntryById } from '../process-update-daily-entry-by-id';
-import type { UpdateDailyEntryInput } from '../../../data/daily-entries';
+import type { UpdateDailyEntryInput } from '../../../model/daily-entry';
 import {
   parseRouteId,
   requirePgPool,

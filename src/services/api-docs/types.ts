@@ -1,4 +1,4 @@
-export type ApiDocsHttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
+export type ApiDocsHttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export type ApiDocsQueryParam = {
   name: string;

@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createDailyEntry } from '../../data/daily-entries/create-daily-entry';
-import type { CreateDailyEntryInput, DailyEntry } from '../../data/daily-entries/types';
+import type { CreateDailyEntryInput, DailyEntry } from '../../model/daily-entry';
 import { assertFocusAreaExists, parseEntryDate } from '../../utils/daily-entries';
 import { isUniqueViolation } from '../../utils/postgres';
 

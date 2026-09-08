@@ -1,0 +1,1 @@
+export { createSpeechTherapyConsumptionRouter } from './router';

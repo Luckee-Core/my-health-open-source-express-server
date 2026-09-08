@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateAllergyInput, Allergy } from './types';
+import type { CreateAllergyInput, Allergy } from '../../model/allergy';
 
 type Queryable = Pool | PoolClient;
 

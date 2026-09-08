@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { TherapyExercise, UpdateTherapyExerciseInput } from './types';
+import type { TherapyExercise, UpdateTherapyExerciseInput } from '../../model/therapy-exercise';
 
 /**
  * Updates a therapy exercise by id.

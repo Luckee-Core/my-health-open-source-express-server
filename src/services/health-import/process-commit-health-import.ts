@@ -10,8 +10,8 @@ import {
   getHealthImportDraftJson,
   markHealthImportCommitted,
   updateHealthImportById,
-  type HealthImport,
 } from '../../data/health-imports';
+import type { HealthImport } from '../../model/health-import';
 import { upsertHospitalBySourceKey } from '../../data/hospitals';
 import { upsertInsuranceCoverageBySourceKey } from '../../data/insurance-coverages';
 import { upsertMedicalHistoryEventBySourceKey } from '../../data/medical-history-events';

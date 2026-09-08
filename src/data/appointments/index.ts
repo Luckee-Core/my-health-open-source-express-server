@@ -4,9 +4,3 @@ export { getAllAppointments } from './get-all-appointments';
 export { getAppointmentById } from './get-appointment-by-id';
 export { updateAppointmentById } from './update-appointment-by-id';
 export { upsertAppointmentBySourceKey } from './upsert-appointment-by-source-key';
-export type {
-  Appointment,
-  AppointmentStatus,
-  CreateAppointmentInput,
-  UpdateAppointmentInput,
-} from './types';

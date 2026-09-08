@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllSpecialties } from '../../data/specialties/get-all-specialties';
-import type { Specialty } from '../../data/specialties/types';
+import type { Specialty } from '../../model/specialty';
 
 /**
  * Loads all specialties.

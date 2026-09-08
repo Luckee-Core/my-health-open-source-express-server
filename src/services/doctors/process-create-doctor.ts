@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createDoctor } from '../../data/doctors/create-doctor';
-import type { CreateDoctorInput, Doctor } from '../../data/doctors/types';
+import type { CreateDoctorInput, Doctor } from '../../model/doctor';
 import { assertHospitalExists, assertSpecialtyExists } from '../../utils/doctors';
 
 const optionalText = (value: string | null | undefined): string | null => {

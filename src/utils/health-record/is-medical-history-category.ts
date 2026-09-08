@@ -1,4 +1,4 @@
-import type { MedicalHistoryCategory } from '../../data/medical-history-events/types';
+import type { MedicalHistoryCategory } from '../../model/medical-history-event';
 
 const MEDICAL_HISTORY_CATEGORIES: MedicalHistoryCategory[] = [
   'diagnosis',

@@ -1,0 +1,1 @@
+export { createTherapyExerciseImportAiExchangesRouter } from './router';

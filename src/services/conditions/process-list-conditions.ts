@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllConditions } from '../../data/conditions/get-all-conditions';
-import type { Condition } from '../../data/conditions/types';
+import type { Condition } from '../../model/condition';
 
 /**
  * Lists all conditions.

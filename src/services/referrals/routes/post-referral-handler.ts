@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateReferral } from '../process-create-referral';
-import type { CreateReferralInput } from '../../../data/referrals';
+import type { CreateReferralInput } from '../../../model/referral';
 import {
   requirePgPool,
   sendClientError,

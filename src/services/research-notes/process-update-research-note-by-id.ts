@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateResearchNoteById } from '../../data/research-notes/update-research-note-by-id';
-import type { ResearchNote, UpdateResearchNoteInput } from '../../data/research-notes/types';
+import type { ResearchNote, UpdateResearchNoteInput } from '../../model/research-note';
 import {
   assertOptionalHealthRecordFks,
   isResearchNoteCategory,

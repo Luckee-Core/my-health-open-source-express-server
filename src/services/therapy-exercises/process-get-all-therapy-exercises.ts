@@ -1,7 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllTherapyExercises } from '../../data/therapy-exercises';
-import type { TherapyExercise } from '../../data/therapy-exercises';
-
+import type { TherapyExercise } from '../../model/therapy-exercise';
 /**
  * Loads all therapy exercises.
  */

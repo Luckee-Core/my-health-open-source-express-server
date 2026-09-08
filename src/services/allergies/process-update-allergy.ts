@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateAllergyById } from '../../data/allergies/update-allergy-by-id';
-import type { Allergy, UpdateAllergyInput } from '../../data/allergies/types';
+import type { Allergy, UpdateAllergyInput } from '../../model/allergy';
 
 /**
  * Updates a Allergy by id.

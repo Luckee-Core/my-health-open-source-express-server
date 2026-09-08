@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { TherapyExerciseImportDraft } from './types';
+import type { TherapyExerciseImportDraft } from '../../model/therapy-exercise-import';
 
 type Db = Pool | PoolClient;
 

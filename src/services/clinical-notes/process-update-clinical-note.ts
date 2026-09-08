@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateClinicalNoteById } from '../../data/clinical-notes/update-clinical-note-by-id';
-import type { ClinicalNote, UpdateClinicalNoteInput } from '../../data/clinical-notes/types';
+import type { ClinicalNote, UpdateClinicalNoteInput } from '../../model/clinical-note';
 
 /**
  * Updates a ClinicalNote by id.

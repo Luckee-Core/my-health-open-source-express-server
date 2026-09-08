@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateMedicationById } from '../../data/medications/update-medication-by-id';
-import type { Medication, UpdateMedicationInput } from '../../data/medications/types';
+import type { Medication, UpdateMedicationInput } from '../../model/medication';
 
 /**
  * Updates a Medication by id.

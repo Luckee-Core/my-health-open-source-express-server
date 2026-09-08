@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateSymptomLog } from '../process-create-symptom-log';
-import type { CreateSymptomLogInput } from '../../../data/symptom-logs';
+import type { CreateSymptomLogInput } from '../../../model/symptom-log';
 import {
   requirePgPool,
   sendClientError,

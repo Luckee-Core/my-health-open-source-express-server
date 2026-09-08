@@ -3,7 +3,7 @@ import { incrementTherapyExerciseLog } from '../../data/therapy-exercise-logs';
 import type {
   IncrementTherapyExerciseLogInput,
   TherapyExerciseLog,
-} from '../../data/therapy-exercise-logs';
+} from '../../model/therapy-exercise-log';
 import { parseLogDate } from '../../utils/therapy-exercise-logs';
 import { assertTherapyExerciseExists } from '../../utils/therapy-exercises';
 

@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateSymptomLogInput, SymptomLog } from './types';
+import type { CreateSymptomLogInput, SymptomLog } from '../../model/symptom-log';
 
 /**
  * Creates a symptom log record.

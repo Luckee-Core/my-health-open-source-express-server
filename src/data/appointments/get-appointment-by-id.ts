@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Appointment } from './types';
+import type { Appointment } from '../../model/appointment';
 
 /**
  * Fetches one appointment row by id.

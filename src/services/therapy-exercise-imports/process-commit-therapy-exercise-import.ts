@@ -1,11 +1,11 @@
 import type { Pool } from 'pg';
 import { createTherapyExercise } from '../../data/therapy-exercises';
-import type { TherapyExercise } from '../../data/therapy-exercises';
+import type { TherapyExercise } from '../../model/therapy-exercise';
 import {
   getTherapyExerciseImportDraftJson,
   markTherapyExerciseImportCommitted,
 } from '../../data/therapy-exercise-imports';
-import type { TherapyExerciseImportDraftExercise } from '../../data/therapy-exercise-imports';
+import type { TherapyExerciseImportDraftExercise } from '../../model/therapy-exercise-import';
 import { parseTrackingKind } from '../../utils/therapy-exercises';
 
 export type CommitTherapyExerciseImportInput = {

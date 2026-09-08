@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateTherapyExerciseImportInput, TherapyExerciseImport } from './types';
+import type { CreateTherapyExerciseImportInput, TherapyExerciseImport } from '../../model/therapy-exercise-import';
 
 /**
  * Creates a therapy exercise import preview record.

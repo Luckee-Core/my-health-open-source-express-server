@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateDoctor } from '../process-create-doctor';
-import type { CreateDoctorInput } from '../../../data/doctors';
+import type { CreateDoctorInput } from '../../../model/doctor';
 import {
   requirePgPool,
   sendClientError,

@@ -5,7 +5,7 @@ import type {
   Appointment,
   AppointmentStatus,
   UpdateAppointmentInput,
-} from '../../data/appointments/types';
+} from '../../model/appointment';
 import { assertDoctorExists, isAppointmentStatus, resolveCompletedAt } from '../../utils/appointments';
 
 const optionalText = (value: string | null | undefined): string | null => {

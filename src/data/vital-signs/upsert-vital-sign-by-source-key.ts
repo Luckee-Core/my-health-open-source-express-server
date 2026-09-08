@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateVitalSignInput, VitalSign } from './types';
+import type { CreateVitalSignInput, VitalSign } from '../../model/vital-sign';
 
 type Queryable = Pool | PoolClient;
 

@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Hospital } from './types';
+import type { Hospital } from '../../model/hospital';
 
 /**
  * Loads all hospitals ordered by name.

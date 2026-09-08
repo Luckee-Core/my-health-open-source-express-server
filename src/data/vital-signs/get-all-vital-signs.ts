@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { VitalSign } from './types';
+import type { VitalSign } from '../../model/vital-sign';
 
 /**
  * Loads all vital-signs.

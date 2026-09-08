@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createSymptomLog } from '../../data/symptom-logs/create-symptom-log';
-import type { CreateSymptomLogInput, SymptomLog } from '../../data/symptom-logs/types';
+import type { CreateSymptomLogInput, SymptomLog } from '../../model/symptom-log';
 import {
   assertOptionalHealthRecordFks,
   parseDurationMinutes,

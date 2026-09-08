@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllAllergies } from '../../data/allergies/get-all-allergies';
-import type { Allergy } from '../../data/allergies/types';
+import type { Allergy } from '../../model/allergy';
 
 /**
  * Lists all allergies.

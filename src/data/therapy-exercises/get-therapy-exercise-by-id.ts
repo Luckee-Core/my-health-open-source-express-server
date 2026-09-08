@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { TherapyExercise } from './types';
+import type { TherapyExercise } from '../../model/therapy-exercise';
 
 /**
  * Loads a therapy exercise by id.

@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Appointment } from './types';
+import type { Appointment } from '../../model/appointment';
 
 /**
  * Loads all appointments ordered by scheduled_at ascending.

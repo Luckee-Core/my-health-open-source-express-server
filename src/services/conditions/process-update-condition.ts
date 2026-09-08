@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateConditionById } from '../../data/conditions/update-condition-by-id';
-import type { Condition, UpdateConditionInput } from '../../data/conditions/types';
+import type { Condition, UpdateConditionInput } from '../../model/condition';
 
 /**
  * Updates a Condition by id.

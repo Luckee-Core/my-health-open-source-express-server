@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Hospital, UpdateHospitalInput } from './types';
+import type { Hospital, UpdateHospitalInput } from '../../model/hospital';
 
 /**
  * Updates a hospital by id.

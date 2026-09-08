@@ -15,6 +15,10 @@ ADRs for **My Health Express** (my-health-open-source-express-server) and Expres
 9. [009 – Local Postgres data layer](./009-local-postgres-data-layer.md) — `pg` pool + `DATABASE_URL` (not Supabase).
 10. [011 – Multipart upload & C-CDA health import](./011-multipart-health-import.md) — preview/commit, multer memory, draft JSONB, provenance keys.
 11. [012 – Therapy exercises & photo import](./012-therapy-exercises-and-photo-import.md) — speech homework tracking, increment logs, vision preview/commit.
+12. [013 – Three-table AI audit and costs](./013-ai-audit-and-costs.md) — requests/responses/exchanges, `llm_models`, `exchange_table_registry`.
+13. [014 – Tube feed tracking](./014-tube-feed-tracking.md) — formula catalog, morning pump snapshots, derived calories.
+14. [015 – Domain models (`src/model`)](./015-domain-models.md) — table row and write-input types; **not** in `src/data/`.
+15. [016 – Speech therapy consumption](./016-speech-therapy-consumption.md) — daily ice-cube (and later type) counts.
 
 ## How to use
 

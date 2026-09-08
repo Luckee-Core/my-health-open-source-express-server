@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateMedicalHistoryEventById } from '../process-update-medical-history-event-by-id';
-import type { UpdateMedicalHistoryEventInput } from '../../../data/medical-history-events';
+import type { UpdateMedicalHistoryEventInput } from '../../../model/medical-history-event';
 import {
   parseRouteId,
   requirePgPool,

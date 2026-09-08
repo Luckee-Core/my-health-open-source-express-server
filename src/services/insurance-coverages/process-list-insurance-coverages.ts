@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllInsuranceCoverages } from '../../data/insurance-coverages/get-all-insurance-coverages';
-import type { InsuranceCoverage } from '../../data/insurance-coverages/types';
+import type { InsuranceCoverage } from '../../model/insurance-coverage';
 
 /**
  * Lists all insurance-coverages.

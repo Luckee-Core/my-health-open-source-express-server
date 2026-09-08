@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Condition } from './types';
+import type { Condition } from '../../model/condition';
 
 /**
  * Loads all conditions.

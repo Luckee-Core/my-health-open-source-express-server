@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateMedicalHistoryEventInput, MedicalHistoryEvent } from './types';
+import type { CreateMedicalHistoryEventInput, MedicalHistoryEvent } from '../../model/medical-history-event';
 
 /**
  * Creates a medical history event record.

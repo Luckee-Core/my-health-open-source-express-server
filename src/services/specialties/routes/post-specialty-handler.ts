@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateSpecialty } from '../process-create-specialty';
-import type { CreateSpecialtyInput } from '../../../data/specialties';
+import type { CreateSpecialtyInput } from '../../../model/specialty';
 import {
   requirePgPool,
   sendClientError,

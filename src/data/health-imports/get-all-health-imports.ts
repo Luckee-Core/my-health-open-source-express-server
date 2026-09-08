@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { HealthImport } from './types';
+import type { HealthImport } from '../../model/health-import';
 
 /**
  * Lists health imports newest first.

@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createAllergy } from '../../data/allergies/create-allergy';
-import type { CreateAllergyInput, Allergy } from '../../data/allergies/types';
+import type { CreateAllergyInput, Allergy } from '../../model/allergy';
 
 /**
  * Creates a Allergy after light validation.

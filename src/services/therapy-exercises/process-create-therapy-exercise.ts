@@ -3,8 +3,8 @@ import { createTherapyExercise } from '../../data/therapy-exercises';
 import type {
   CreateTherapyExerciseInput,
   TherapyExercise,
-} from '../../data/therapy-exercises';
-import { parseTrackingKind } from '../../utils/therapy-exercises';
+} from '../../model/therapy-exercise';
+import { parseFrequency, parseTrackingKind } from '../../utils/therapy-exercises';
 
 const optionalText = (value: string | null | undefined): string | null => {
   const trimmed = value?.trim();
@@ -25,6 +25,7 @@ export const processCreateTherapyExercise = async (
   }
 
   const trackingKind = parseTrackingKind(input.tracking_kind);
+  const frequency = parseFrequency(input.frequency ?? 'daily');
   const unitSize = input.unit_size ?? 1;
   if (!Number.isFinite(unitSize) || unitSize < 1) {
     throw new Error('unit_size must be at least 1');
@@ -37,7 +38,7 @@ export const processCreateTherapyExercise = async (
     tracking_kind: trackingKind,
     target_count: input.target_count,
     unit_size: unitSize,
-    frequency: input.frequency ?? 'daily',
+    frequency,
     is_active: input.is_active ?? true,
     sort_order: input.sort_order ?? 0,
     source: input.source ?? 'manual',

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateCondition } from '../process-create-condition';
-import type { CreateConditionInput } from '../../../data/conditions';
+import type { CreateConditionInput } from '../../../model/condition';
 import {
   requirePgPool,
   sendClientError,

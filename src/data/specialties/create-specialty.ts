@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateSpecialtyInput, Specialty } from './types';
+import type { CreateSpecialtyInput, Specialty } from '../../model/specialty';
 
 /**
  * Creates a specialty record.

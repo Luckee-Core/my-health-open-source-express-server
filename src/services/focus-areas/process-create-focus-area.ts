@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createFocusArea } from '../../data/focus-areas/create-focus-area';
-import type { CreateFocusAreaInput, FocusArea } from '../../data/focus-areas/types';
+import type { CreateFocusAreaInput, FocusArea } from '../../model/focus-area';
 import { isUniqueViolation } from '../../utils/postgres';
 
 const optionalText = (value: string | null | undefined): string | null => {

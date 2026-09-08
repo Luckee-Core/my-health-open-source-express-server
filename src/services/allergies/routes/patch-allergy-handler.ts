@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateAllergy } from '../process-update-allergy';
-import type { UpdateAllergyInput } from '../../../data/allergies';
+import type { UpdateAllergyInput } from '../../../model/allergy';
 import {
   requirePgPool,
   sendClientError,

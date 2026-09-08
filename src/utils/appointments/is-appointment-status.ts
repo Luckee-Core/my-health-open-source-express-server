@@ -1,4 +1,4 @@
-import type { AppointmentStatus } from '../../data/appointments/types';
+import type { AppointmentStatus } from '../../model/appointment';
 
 const STATUSES: AppointmentStatus[] = ['scheduled', 'completed', 'cancelled'];
 

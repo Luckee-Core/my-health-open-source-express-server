@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateFocusAreaInput, FocusArea } from './types';
+import type { CreateFocusAreaInput, FocusArea } from '../../model/focus-area';
 
 /**
  * Creates a focus area record.

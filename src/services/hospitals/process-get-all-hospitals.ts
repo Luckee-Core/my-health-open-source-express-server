@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllHospitals } from '../../data/hospitals/get-all-hospitals';
-import type { Hospital } from '../../data/hospitals/types';
+import type { Hospital } from '../../model/hospital';
 
 /**
  * Loads all hospitals.

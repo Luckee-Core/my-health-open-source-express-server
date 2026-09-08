@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateResearchNoteInput, ResearchNote } from './types';
+import type { CreateResearchNoteInput, ResearchNote } from '../../model/research-note';
 
 /**
  * Creates a research note record.

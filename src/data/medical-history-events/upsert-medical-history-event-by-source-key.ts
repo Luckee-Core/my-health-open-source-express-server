@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateMedicalHistoryEventInput, MedicalHistoryEvent } from './types';
+import type { CreateMedicalHistoryEventInput, MedicalHistoryEvent } from '../../model/medical-history-event';
 
 type Queryable = Pool | PoolClient;
 

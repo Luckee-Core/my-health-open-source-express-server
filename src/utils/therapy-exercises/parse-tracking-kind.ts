@@ -1,5 +1,4 @@
-import type { TherapyExerciseTrackingKind } from '../../data/therapy-exercises';
-
+import type { TherapyExerciseTrackingKind } from '../../model/therapy-exercise';
 const TRACKING_KINDS: TherapyExerciseTrackingKind[] = ['timed_attempts', 'sets_reps'];
 
 /**

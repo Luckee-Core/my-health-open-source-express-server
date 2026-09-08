@@ -30,6 +30,7 @@ export const previewTherapyExerciseImportHandler = async (
     const result = await processPreviewTherapyExerciseImport(pool, {
       buffer: file.buffer,
       mimeType,
+      filename: file.originalname,
     });
     console.log('✅ POST /api/data/therapy-exercise-imports/preview');
     sendSuccess(res, result);

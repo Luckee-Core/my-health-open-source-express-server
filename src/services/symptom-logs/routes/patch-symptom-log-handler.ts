@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateSymptomLogById } from '../process-update-symptom-log-by-id';
-import type { UpdateSymptomLogInput } from '../../../data/symptom-logs';
+import type { UpdateSymptomLogInput } from '../../../model/symptom-log';
 import {
   parseRouteId,
   requirePgPool,

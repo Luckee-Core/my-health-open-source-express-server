@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { UpdateTherapyExerciseInput } from '../../../data/therapy-exercises';
+import type { UpdateTherapyExerciseInput } from '../../../model/therapy-exercise';
 import { processUpdateTherapyExerciseById } from '../process-update-therapy-exercise-by-id';
 import {
   requirePgPool,

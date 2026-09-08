@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createMedication } from '../../data/medications/create-medication';
-import type { CreateMedicationInput, Medication } from '../../data/medications/types';
+import type { CreateMedicationInput, Medication } from '../../model/medication';
 
 /**
  * Creates a Medication after light validation.

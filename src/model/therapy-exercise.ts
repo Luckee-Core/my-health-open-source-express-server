@@ -1,6 +1,7 @@
 export type TherapyExerciseTrackingKind = 'timed_attempts' | 'sets_reps';
 export type TherapyExerciseDiscipline = 'speech';
 export type TherapyExerciseSource = 'manual' | 'photo_import';
+export type TherapyExerciseFrequency = 'daily' | 'session';
 
 export type TherapyExercise = {
   id: string;
@@ -10,7 +11,7 @@ export type TherapyExercise = {
   tracking_kind: TherapyExerciseTrackingKind;
   target_count: number;
   unit_size: number;
-  frequency: string;
+  frequency: TherapyExerciseFrequency;
   is_active: boolean;
   sort_order: number;
   source: TherapyExerciseSource;
@@ -26,7 +27,7 @@ export type CreateTherapyExerciseInput = {
   tracking_kind: TherapyExerciseTrackingKind;
   target_count: number;
   unit_size?: number;
-  frequency?: string;
+  frequency?: TherapyExerciseFrequency;
   is_active?: boolean;
   sort_order?: number;
   source?: TherapyExerciseSource;

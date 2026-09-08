@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createClinicalNote } from '../../data/clinical-notes/create-clinical-note';
-import type { CreateClinicalNoteInput, ClinicalNote } from '../../data/clinical-notes/types';
+import type { CreateClinicalNoteInput, ClinicalNote } from '../../model/clinical-note';
 
 /**
  * Creates a ClinicalNote after light validation.

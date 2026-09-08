@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { MedicalHistoryEvent } from './types';
+import type { MedicalHistoryEvent } from '../../model/medical-history-event';
 
 /**
  * Loads all medical history events ordered by event date descending.

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateResearchNote } from '../process-create-research-note';
-import type { CreateResearchNoteInput } from '../../../data/research-notes';
+import type { CreateResearchNoteInput } from '../../../model/research-note';
 import {
   requirePgPool,
   sendClientError,

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateFocusAreaById } from '../process-update-focus-area-by-id';
-import type { UpdateFocusAreaInput } from '../../../data/focus-areas';
+import type { UpdateFocusAreaInput } from '../../../model/focus-area';
 import {
   parseRouteId,
   requirePgPool,

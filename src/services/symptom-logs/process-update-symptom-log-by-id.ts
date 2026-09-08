@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateSymptomLogById } from '../../data/symptom-logs/update-symptom-log-by-id';
-import type { SymptomLog, UpdateSymptomLogInput } from '../../data/symptom-logs/types';
+import type { SymptomLog, UpdateSymptomLogInput } from '../../model/symptom-log';
 import {
   assertOptionalHealthRecordFks,
   parseDurationMinutes,

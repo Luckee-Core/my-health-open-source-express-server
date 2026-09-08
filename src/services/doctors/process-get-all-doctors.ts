@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllDoctors } from '../../data/doctors/get-all-doctors';
-import type { Doctor } from '../../data/doctors/types';
+import type { Doctor } from '../../model/doctor';
 
 /**
  * Loads all doctors.

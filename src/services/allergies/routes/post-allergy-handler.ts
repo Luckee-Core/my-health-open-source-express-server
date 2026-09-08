@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateAllergy } from '../process-create-allergy';
-import type { CreateAllergyInput } from '../../../data/allergies';
+import type { CreateAllergyInput } from '../../../model/allergy';
 import {
   requirePgPool,
   sendClientError,

@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateFocusAreaById } from '../../data/focus-areas/update-focus-area-by-id';
-import type { FocusArea, UpdateFocusAreaInput } from '../../data/focus-areas/types';
+import type { FocusArea, UpdateFocusAreaInput } from '../../model/focus-area';
 import { isUniqueViolation } from '../../utils/postgres';
 
 const optionalText = (value: string | null | undefined): string | null => {

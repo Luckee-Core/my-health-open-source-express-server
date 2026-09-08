@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createSpecialty } from '../../data/specialties/create-specialty';
-import type { CreateSpecialtyInput, Specialty } from '../../data/specialties/types';
+import type { CreateSpecialtyInput, Specialty } from '../../model/specialty';
 
 /**
  * Creates a specialty after validating input.

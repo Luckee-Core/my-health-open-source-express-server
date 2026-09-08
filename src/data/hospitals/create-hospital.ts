@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateHospitalInput, Hospital } from './types';
+import type { CreateHospitalInput, Hospital } from '../../model/hospital';
 
 /**
  * Creates a hospital / medical facility record.

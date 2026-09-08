@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { MedicalHistoryEvent, UpdateMedicalHistoryEventInput } from './types';
+import type { MedicalHistoryEvent, UpdateMedicalHistoryEventInput } from '../../model/medical-history-event';
 
 /**
  * Updates a medical history event by id.

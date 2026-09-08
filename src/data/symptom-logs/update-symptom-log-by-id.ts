@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { SymptomLog, UpdateSymptomLogInput } from './types';
+import type { SymptomLog, UpdateSymptomLogInput } from '../../model/symptom-log';
 
 /**
  * Updates a symptom log by id.

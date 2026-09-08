@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createAppointment } from '../../data/appointments/create-appointment';
-import type { Appointment, CreateAppointmentInput } from '../../data/appointments/types';
+import type { Appointment, CreateAppointmentInput } from '../../model/appointment';
 import { assertDoctorExists, isAppointmentStatus, resolveCompletedAt } from '../../utils/appointments';
 
 const optionalText = (value: string | null | undefined): string | null => {

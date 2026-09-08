@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateMedication } from '../process-update-medication';
-import type { UpdateMedicationInput } from '../../../data/medications';
+import type { UpdateMedicationInput } from '../../../model/medication';
 import {
   requirePgPool,
   sendClientError,

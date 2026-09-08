@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createReferral } from '../../data/referrals/create-referral';
-import type { CreateReferralInput, Referral } from '../../data/referrals/types';
+import type { CreateReferralInput, Referral } from '../../model/referral';
 
 /**
  * Creates a Referral after light validation.

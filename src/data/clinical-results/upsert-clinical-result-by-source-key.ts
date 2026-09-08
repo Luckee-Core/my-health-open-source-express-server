@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateClinicalResultInput, ClinicalResult } from './types';
+import type { CreateClinicalResultInput, ClinicalResult } from '../../model/clinical-result';
 
 type Queryable = Pool | PoolClient;
 

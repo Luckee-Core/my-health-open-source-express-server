@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Appointment, UpdateAppointmentInput } from './types';
+import type { Appointment, UpdateAppointmentInput } from '../../model/appointment';
 
 /**
  * Updates an appointment by id.

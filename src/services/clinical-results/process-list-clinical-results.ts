@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllClinicalResults } from '../../data/clinical-results/get-all-clinical-results';
-import type { ClinicalResult } from '../../data/clinical-results/types';
+import type { ClinicalResult } from '../../model/clinical-result';
 
 /**
  * Lists all clinical-results.

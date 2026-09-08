@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { FocusArea } from './types';
+import type { FocusArea } from '../../model/focus-area';
 
 /**
  * Loads all focus areas ordered by name ascending.

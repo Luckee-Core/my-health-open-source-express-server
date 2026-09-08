@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Condition, UpdateConditionInput } from './types';
+import type { Condition, UpdateConditionInput } from '../../model/condition';
 
 /**
  * Updates a Condition by id.

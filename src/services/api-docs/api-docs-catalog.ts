@@ -324,8 +324,127 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
       { status: "resolved" },
     ),
     buildEntityGroup(
+      "Feed formulas",
+      "Enteral formula catalog (brand, calories per 1000 mL, container label volumes).",
+      "/api/data/feed-formulas",
+      "feed formula",
+      {
+        id: "uuid",
+        brand: "Nestle",
+        name: "Isosource 1.5",
+        calories_per_1000_ml: 1500,
+        container_volume_ml: 1000,
+        volume_fl_oz: 33.8,
+        volume_qt: 1,
+        volume_l: 1,
+        is_active: true,
+        notes: null,
+        created_at: ts,
+        updated_at: ts,
+      },
+      {
+        brand: "Nestle",
+        name: "Isosource 1.5",
+        calories_per_1000_ml: 1500,
+        container_volume_ml: 1000,
+        volume_fl_oz: 33.8,
+        volume_qt: 1,
+        volume_l: 1,
+      },
+      { is_active: false },
+    ),
+    {
+      name: "Feed logs",
+      description:
+        "Morning pump snapshots. PUT upserts by log_date and snapshots calories_per_1000_ml from the formula. Set is_start once to record the current pump total as the origin (no calories). Volume and calories are derived in the web app from consecutive totals.",
+      endpoints: [
+        {
+          method: "GET",
+          path: "/api/data/feed-logs",
+          summary: "List pump snapshots newest first",
+          responses: [
+            {
+              status: 200,
+              description: "Log rows",
+              example: {
+                success: true,
+                data: [
+                  {
+                    id: "uuid",
+                    log_date: "2026-01-15",
+                    formula_id: "uuid",
+                    intermittent_rate_ml_per_hr: 50,
+                    feed_left_ml: 400,
+                    total_fed_ml: 1600,
+                    pump_reset: false,
+                    is_start: false,
+                    calories_per_1000_ml: 1500,
+                    notes: null,
+                    created_at: ts,
+                    updated_at: ts,
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          method: "PUT",
+          path: "/api/data/feed-logs",
+          summary: "Upsert today's (or a given date's) pump snapshot",
+          requestBody: {
+            contentType: "application/json",
+            example: {
+              log_date: "2026-01-15",
+              formula_id: "uuid",
+              intermittent_rate_ml_per_hr: 50,
+              feed_left_ml: 400,
+              total_fed_ml: 1600,
+              pump_reset: false,
+              is_start: true,
+            },
+          },
+          responses: [
+            {
+              status: 200,
+              description: "Saved snapshot",
+              example: {
+                success: true,
+                data: {
+                  id: "uuid",
+                  log_date: "2026-01-15",
+                  formula_id: "uuid",
+                  intermittent_rate_ml_per_hr: 50,
+                  feed_left_ml: 400,
+                  total_fed_ml: 1600,
+                  pump_reset: false,
+                  is_start: false,
+                  calories_per_1000_ml: 1500,
+                  notes: null,
+                  created_at: ts,
+                  updated_at: ts,
+                },
+              },
+            },
+          ],
+        },
+        {
+          method: "DELETE",
+          path: "/api/data/feed-logs/:id",
+          summary: "Delete a pump snapshot",
+          responses: [
+            {
+              status: 200,
+              description: "Deleted",
+              example: { success: true, data: { id: "uuid" } },
+            },
+          ],
+        },
+      ],
+    },
+    buildEntityGroup(
       "Therapy exercises",
-      "Speech therapy homework prescriptions (timed attempts or sets/reps).",
+      "Speech therapy prescriptions. frequency is daily (homework remaining list) or session (therapy-visit only). is_active=false pauses logging.",
       "/api/data/therapy-exercises",
       "therapy exercise",
       {
@@ -349,13 +468,14 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
         tracking_kind: "timed_attempts",
         target_count: 10,
         unit_size: 5,
+        frequency: "daily",
       },
-      { is_active: false },
+      { frequency: "session", is_active: true },
     ),
     {
       name: "Therapy exercise logs",
       description:
-        "Daily progress per exercise. Use POST /increment to atomically add or subtract completed attempts/sets.",
+        "Daily progress per exercise. Use POST /increment to add or subtract reps/attempts. Use POST /skip to mark an exercise as not for today (e.g. waiting on nurse help).",
       endpoints: [
         {
           method: "GET",
@@ -373,6 +493,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
                     exercise_id: "uuid",
                     log_date: "2026-01-15",
                     completed_count: 3,
+                    skipped: false,
                     notes: null,
                     created_at: ts,
                     updated_at: ts,
@@ -401,7 +522,97 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
                   exercise_id: "uuid",
                   log_date: "2026-01-15",
                   completed_count: 4,
+                  skipped: false,
                   notes: null,
+                  created_at: ts,
+                  updated_at: ts,
+                },
+              },
+            },
+          ],
+        },
+        {
+          method: "POST",
+          path: "/api/data/therapy-exercise-logs/skip",
+          summary: "Mark or unmark an exercise as skipped for a given date",
+          requestBody: {
+            contentType: "application/json",
+            example: { exercise_id: "uuid", log_date: "2026-01-15", skipped: true },
+          },
+          responses: [
+            {
+              status: 200,
+              description: "Updated log",
+              example: {
+                success: true,
+                data: {
+                  id: "uuid",
+                  exercise_id: "uuid",
+                  log_date: "2026-01-15",
+                  completed_count: 0,
+                  skipped: true,
+                  notes: null,
+                  created_at: ts,
+                  updated_at: ts,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Speech therapy consumption",
+      description:
+        "Daily consumption counts by type. The only type today is ice_cube. Use POST /increment to add or subtract quantity for a date.",
+      endpoints: [
+        {
+          method: "GET",
+          path: "/api/data/speech-therapy-consumption",
+          summary: "List consumption rows newest first",
+          responses: [
+            {
+              status: 200,
+              description: "Consumption rows",
+              example: {
+                success: true,
+                data: [
+                  {
+                    id: "uuid",
+                    consumption_type: "ice_cube",
+                    log_date: "2026-01-15",
+                    quantity: 3,
+                    created_at: ts,
+                    updated_at: ts,
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          method: "POST",
+          path: "/api/data/speech-therapy-consumption/increment",
+          summary: "Upsert today's row and apply delta (+1 / -1)",
+          requestBody: {
+            contentType: "application/json",
+            example: {
+              consumption_type: "ice_cube",
+              log_date: "2026-01-15",
+              delta: 1,
+            },
+          },
+          responses: [
+            {
+              status: 200,
+              description: "Updated consumption row",
+              example: {
+                success: true,
+                data: {
+                  id: "uuid",
+                  consumption_type: "ice_cube",
+                  log_date: "2026-01-15",
+                  quantity: 4,
                   created_at: ts,
                   updated_at: ts,
                 },
@@ -428,6 +639,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
                 success: true,
                 data: {
                   previewId: "uuid",
+                  exchangeId: "uuid",
                   exercises: [
                     {
                       name: "Straw phonation",
@@ -466,6 +678,73 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
               status: 200,
               description: "Exercises created",
               example: { success: true, data: { exercises: [] } },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Therapy exercise import AI exchanges",
+      description:
+        "Completed vision-import audit rows with token usage for the AI Costs page.",
+      endpoints: [
+        {
+          method: "GET",
+          path: "/api/data/therapy-exercise-import-ai-exchanges",
+          summary: "List completed therapy photo-import AI exchanges",
+          responses: [
+            {
+              status: 200,
+              description: "Completed exchanges",
+              example: {
+                success: true,
+                data: [
+                  {
+                    id: "uuid",
+                    request_id: "uuid",
+                    response_id: "uuid",
+                    import_id: "uuid",
+                    input_tokens: 1200,
+                    output_tokens: 400,
+                    total_tokens: 1600,
+                    model_used: "claude-haiku-4-5-20251001",
+                    status: "completed",
+                    created_at: ts,
+                    updated_at: ts,
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "LLM models",
+      description: "Pricing catalog used to estimate AI Costs from exchange token counts.",
+      endpoints: [
+        {
+          method: "GET",
+          path: "/api/data/llm-models",
+          summary: "List LLM pricing rows",
+          responses: [
+            {
+              status: 200,
+              description: "Model pricing",
+              example: {
+                success: true,
+                data: [
+                  {
+                    id: "uuid",
+                    provider: "anthropic",
+                    model: "claude-haiku-4-5-20251001",
+                    input_cost_per_million_usd: "3.000000",
+                    output_cost_per_million_usd: "15.000000",
+                    created_at: ts,
+                    updated_at: ts,
+                  },
+                ],
+              },
             },
           ],
         },

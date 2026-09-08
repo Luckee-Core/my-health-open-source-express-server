@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateResearchNoteById } from '../process-update-research-note-by-id';
-import type { UpdateResearchNoteInput } from '../../../data/research-notes';
+import type { UpdateResearchNoteInput } from '../../../model/research-note';
 import {
   parseRouteId,
   requirePgPool,

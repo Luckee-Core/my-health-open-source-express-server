@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateHospital } from '../process-create-hospital';
-import type { CreateHospitalInput } from '../../../data/hospitals';
+import type { CreateHospitalInput } from '../../../model/hospital';
 import {
   requirePgPool,
   sendClientError,

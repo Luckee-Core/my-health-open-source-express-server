@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { ResearchNote, UpdateResearchNoteInput } from './types';
+import type { ResearchNote, UpdateResearchNoteInput } from '../../model/research-note';
 
 /**
  * Updates a research note by id.

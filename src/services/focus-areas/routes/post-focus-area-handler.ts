@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateFocusArea } from '../process-create-focus-area';
-import type { CreateFocusAreaInput } from '../../../data/focus-areas';
+import type { CreateFocusAreaInput } from '../../../model/focus-area';
 import {
   requirePgPool,
   sendClientError,

@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Allergy } from './types';
+import type { Allergy } from '../../model/allergy';
 
 /**
  * Loads all allergies.

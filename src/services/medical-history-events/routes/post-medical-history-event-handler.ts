@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateMedicalHistoryEvent } from '../process-create-medical-history-event';
-import type { CreateMedicalHistoryEventInput } from '../../../data/medical-history-events';
+import type { CreateMedicalHistoryEventInput } from '../../../model/medical-history-event';
 import {
   requirePgPool,
   sendClientError,

@@ -44,9 +44,10 @@ app.use('/api/users', createUsersRouter());
 
 ### 3) Adding database access
 
-When you add Supabase (or another DB), add **one folder per table** under `src/data/`:
+When you add Postgres, add **one folder per table** under `src/data/` and **one entity file** under `src/model/` ([015](./015-domain-models.md)):
 
 ```text
+src/model/user.ts
 src/data/users/
   get-user-by-id.ts
   create-user.ts

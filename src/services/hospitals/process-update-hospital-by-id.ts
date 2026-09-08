@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateHospitalById } from '../../data/hospitals/update-hospital-by-id';
-import type { Hospital, UpdateHospitalInput } from '../../data/hospitals/types';
+import type { Hospital, UpdateHospitalInput } from '../../model/hospital';
 
 const optionalText = (value: string | null | undefined): string | null => {
   const trimmed = value?.trim();

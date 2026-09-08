@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllMedications } from '../../data/medications/get-all-medications';
-import type { Medication } from '../../data/medications/types';
+import type { Medication } from '../../model/medication';
 
 /**
  * Lists all medications.

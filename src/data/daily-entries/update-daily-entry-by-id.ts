@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { DailyEntry, UpdateDailyEntryInput } from './types';
+import type { DailyEntry, UpdateDailyEntryInput } from '../../model/daily-entry';
 
 /**
  * Updates a daily entry by id.

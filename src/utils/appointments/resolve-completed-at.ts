@@ -1,4 +1,4 @@
-import type { AppointmentStatus } from '../../data/appointments/types';
+import type { AppointmentStatus } from '../../model/appointment';
 
 /**
  * Resolves completed_at based on status transition.

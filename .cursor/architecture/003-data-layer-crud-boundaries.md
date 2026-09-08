@@ -25,12 +25,13 @@ Database access must stay isolated from HTTP handlers and business logic. **`src
 1. Each file in `src/data/{table}/` exports exactly one CRUD function.
 2. File names describe the action (`get-user-by-id.ts`, `create-user.ts`, …).
 3. Every function has JSDoc.
-4. Optional `types.ts` in the same table folder for row types.
+4. **Never** add `types.ts` in a table folder. Row and write-input types live in `src/model/{entity}.ts` ([015](./015-domain-models.md)).
 
 ### 3) What is forbidden in `src/data/`
 
 - Business rules (validation beyond DB constraints, pricing, permissions orchestration)
 - HTTP or Express types
+- Model / row types (`types.ts`)
 - Calling `processX()` or handlers
 - AI / external API calls
 
@@ -62,8 +63,10 @@ src/
     users/                       # table name = folder name
       get-user-by-id.ts
       create-user.ts
-      types.ts
       index.ts
+  model/
+    user.ts
+    index.ts
   services/
     users/
       router.ts
@@ -79,7 +82,7 @@ src/
 
 ```ts
 import type { Pool } from 'pg';
-import type { UserRow } from './types';
+import type { UserRow } from '../../model/user';
 
 /**
  * Fetches one user row by ID.
@@ -178,6 +181,7 @@ src/domains/users/   # ❌ not part of this template
 
 - [ ] One `src/data/{table}/` folder per table
 - [ ] One CRUD function per file with JSDoc
+- [ ] No `types.ts` under `src/data/` — models in `src/model/`
 - [ ] No queries in handlers or `processX()`
 - [ ] Business logic in `src/services/{feature}/process-*.ts`
 - [ ] No `src/domains/` directory

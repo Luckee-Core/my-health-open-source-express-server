@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Specialty, UpdateSpecialtyInput } from './types';
+import type { Specialty, UpdateSpecialtyInput } from '../../model/specialty';
 
 /**
  * Updates a specialty by id.

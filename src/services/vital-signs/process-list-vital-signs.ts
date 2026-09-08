@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllVitalSigns } from '../../data/vital-signs/get-all-vital-signs';
-import type { VitalSign } from '../../data/vital-signs/types';
+import type { VitalSign } from '../../model/vital-sign';
 
 /**
  * Lists all vital-signs.

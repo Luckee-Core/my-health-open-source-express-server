@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllTherapyExerciseLogs } from '../../data/therapy-exercise-logs';
-import type { TherapyExerciseLog } from '../../data/therapy-exercise-logs';
+import type { TherapyExerciseLog } from '../../model/therapy-exercise-log';
 import { parseLogDate } from '../../utils/therapy-exercise-logs';
 
 type GetAllOptions = {

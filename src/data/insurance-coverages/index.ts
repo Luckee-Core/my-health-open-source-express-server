@@ -3,4 +3,3 @@ export { deleteInsuranceCoverageById } from './delete-insurance-coverage-by-id';
 export { getAllInsuranceCoverages } from './get-all-insurance-coverages';
 export { updateInsuranceCoverageById } from './update-insurance-coverage-by-id';
 export { upsertInsuranceCoverageBySourceKey } from './upsert-insurance-coverage-by-source-key';
-export type { CreateInsuranceCoverageInput, InsuranceCoverage, UpdateInsuranceCoverageInput } from './types';

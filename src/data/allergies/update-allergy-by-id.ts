@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Allergy, UpdateAllergyInput } from './types';
+import type { Allergy, UpdateAllergyInput } from '../../model/allergy';
 
 /**
  * Updates a Allergy by id.

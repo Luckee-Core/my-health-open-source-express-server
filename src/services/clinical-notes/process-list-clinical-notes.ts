@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllClinicalNotes } from '../../data/clinical-notes/get-all-clinical-notes';
-import type { ClinicalNote } from '../../data/clinical-notes/types';
+import type { ClinicalNote } from '../../model/clinical-note';
 
 /**
  * Lists all clinical-notes.

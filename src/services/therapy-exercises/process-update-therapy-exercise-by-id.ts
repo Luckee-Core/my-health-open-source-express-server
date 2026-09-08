@@ -6,8 +6,8 @@ import {
 import type {
   TherapyExercise,
   UpdateTherapyExerciseInput,
-} from '../../data/therapy-exercises';
-import { parseTrackingKind } from '../../utils/therapy-exercises';
+} from '../../model/therapy-exercise';
+import { parseFrequency, parseTrackingKind } from '../../utils/therapy-exercises';
 
 const optionalText = (value: string | null | undefined): string | null => {
   const trimmed = value?.trim();
@@ -33,6 +33,9 @@ export const processUpdateTherapyExerciseById = async (
   }
   if (patch.tracking_kind !== undefined) {
     patch.tracking_kind = parseTrackingKind(patch.tracking_kind);
+  }
+  if (patch.frequency !== undefined) {
+    patch.frequency = parseFrequency(patch.frequency);
   }
   if (patch.target_count !== undefined && patch.target_count < 1) {
     throw new Error('target_count must be at least 1');

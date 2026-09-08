@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateAppointment } from '../process-create-appointment';
-import type { CreateAppointmentInput } from '../../../data/appointments';
+import type { CreateAppointmentInput } from '../../../model/appointment';
 import {
   requirePgPool,
   sendClientError,

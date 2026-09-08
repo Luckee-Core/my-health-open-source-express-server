@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { DailyEntry } from './types';
+import type { DailyEntry } from '../../model/daily-entry';
 
 /**
  * Loads all daily entries ordered by entry_date descending.

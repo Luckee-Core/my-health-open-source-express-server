@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { createClinicalResult } from '../../data/clinical-results/create-clinical-result';
-import type { CreateClinicalResultInput, ClinicalResult } from '../../data/clinical-results/types';
+import type { CreateClinicalResultInput, ClinicalResult } from '../../model/clinical-result';
 
 /**
  * Creates a ClinicalResult after light validation.

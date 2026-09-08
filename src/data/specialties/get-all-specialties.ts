@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Specialty } from './types';
+import type { Specialty } from '../../model/specialty';
 
 /**
  * Loads all specialties ordered by name.

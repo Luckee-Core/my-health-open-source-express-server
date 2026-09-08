@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllFocusAreas } from '../../data/focus-areas/get-all-focus-areas';
-import type { FocusArea } from '../../data/focus-areas/types';
+import type { FocusArea } from '../../model/focus-area';
 
 /**
  * Loads all focus areas.

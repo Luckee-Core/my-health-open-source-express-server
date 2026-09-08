@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateConditionInput, Condition } from './types';
+import type { CreateConditionInput, Condition } from '../../model/condition';
 
 type Queryable = Pool | PoolClient;
 

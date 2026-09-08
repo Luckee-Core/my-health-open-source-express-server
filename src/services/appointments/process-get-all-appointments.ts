@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllAppointments } from '../../data/appointments/get-all-appointments';
-import type { Appointment } from '../../data/appointments/types';
+import type { Appointment } from '../../model/appointment';
 
 /**
  * Loads all appointments.

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateClinicalNote } from '../process-create-clinical-note';
-import type { CreateClinicalNoteInput } from '../../../data/clinical-notes';
+import type { CreateClinicalNoteInput } from '../../../model/clinical-note';
 import {
   requirePgPool,
   sendClientError,

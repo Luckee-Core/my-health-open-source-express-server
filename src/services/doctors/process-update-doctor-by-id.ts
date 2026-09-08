@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { updateDoctorById } from '../../data/doctors/update-doctor-by-id';
-import type { Doctor, UpdateDoctorInput } from '../../data/doctors/types';
+import type { Doctor, UpdateDoctorInput } from '../../model/doctor';
 import { assertHospitalExists, assertSpecialtyExists } from '../../utils/doctors';
 
 const optionalText = (value: string | null | undefined): string | null => {

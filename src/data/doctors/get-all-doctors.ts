@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Doctor } from './types';
+import type { Doctor } from '../../model/doctor';
 
 /**
  * Loads all doctors ordered by name.

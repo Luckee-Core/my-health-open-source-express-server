@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { VitalSign, UpdateVitalSignInput } from './types';
+import type { VitalSign, UpdateVitalSignInput } from '../../model/vital-sign';
 
 /**
  * Updates a VitalSign by id.

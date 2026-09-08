@@ -1,5 +1,5 @@
 import type { PoolClient } from 'pg';
-import type { TherapyExerciseImport } from './types';
+import type { TherapyExerciseImport } from '../../model/therapy-exercise-import';
 
 /**
  * Marks a therapy exercise import as committed.

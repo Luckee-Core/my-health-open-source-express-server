@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { CreateSymptomLogInput, SymptomLog } from './types';
+import type { CreateSymptomLogInput, SymptomLog } from '../../model/symptom-log';
 
 type Queryable = Pool | PoolClient;
 

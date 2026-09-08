@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processUpdateCondition } from '../process-update-condition';
-import type { UpdateConditionInput } from '../../../data/conditions';
+import type { UpdateConditionInput } from '../../../model/condition';
 import {
   requirePgPool,
   sendClientError,

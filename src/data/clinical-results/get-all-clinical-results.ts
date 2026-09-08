@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { ClinicalResult } from './types';
+import type { ClinicalResult } from '../../model/clinical-result';
 
 /**
  * Loads all clinical-results.

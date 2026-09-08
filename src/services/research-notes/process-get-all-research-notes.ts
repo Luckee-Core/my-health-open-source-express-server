@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllResearchNotes } from '../../data/research-notes/get-all-research-notes';
-import type { ResearchNote } from '../../data/research-notes/types';
+import type { ResearchNote } from '../../model/research-note';
 
 /**
  * Loads all research notes.

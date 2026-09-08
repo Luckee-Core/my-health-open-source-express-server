@@ -1,4 +1,4 @@
-import type { ResearchNoteCategory } from '../../data/research-notes/types';
+import type { ResearchNoteCategory } from '../../model/research-note';
 
 const RESEARCH_NOTE_CATEGORIES: ResearchNoteCategory[] = [
   'imaging',

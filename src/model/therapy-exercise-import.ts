@@ -16,6 +16,7 @@ export type TherapyExerciseImport = {
   id: string;
   status: TherapyExerciseImportStatus;
   draft_json: TherapyExerciseImportDraft;
+  exchange_id: string | null;
   created_at: string;
   updated_at: string;
 };

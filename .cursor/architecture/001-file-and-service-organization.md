@@ -22,12 +22,11 @@ src/
       create-user.ts
       update-user-by-id.ts
       delete-user-by-id.ts
-      types.ts                   # optional row/DTO types for this table
       index.ts
-    orders/
-      insert-order.ts
-      select-order-by-id.ts
-      index.ts
+  model/                         # table row + write-input types (ADR 015)
+    user.ts
+    order.ts
+    index.ts
   services/                      # routes, handlers, action/business logic
     middleware/
     health/
@@ -54,6 +53,8 @@ src/
   domains/                       # ❌ not used in this template
   data/
     crud.ts                      # ❌ multiple tables or functions in one file
+    users/
+      types.ts                   # ❌ row types belong in src/model/{entity}.ts
   services/
     users/
       get-user-handler.ts        # ❌ handler with inline .from('users') query
@@ -71,17 +72,18 @@ src/
 |------|--------|
 | One folder per **table** | `src/data/users/`, `src/data/orders/` — folder name matches the table |
 | One function per file | `get-user-by-id.ts`, `create-user.ts`, etc. |
-| CRUD only | `select`, `insert`, `update`, `delete` — no business rules, no HTTP, no AI |
+| CRUD only | `select`, `insert`, `update`, `delete` — no business rules, no HTTP, no AI, **no model types** |
 | JSDoc | Required on every exported function |
 | Client param | `SupabaseClient` (or DB client) as first argument |
 | No `createClient()` | Data layer never constructs clients |
+| Types | Import from `src/model/{entity}.ts` — see [015](./015-domain-models.md) |
 
 ✅ Correct:
 
 ```typescript
 // src/data/users/get-user-by-id.ts
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { UserRow } from './types';
+import type { UserRow } from '../../model/user';
 
 /**
  * Fetches one user row by id.

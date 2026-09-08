@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { Referral, UpdateReferralInput } from './types';
+import type { Referral, UpdateReferralInput } from '../../model/referral';
 
 /**
  * Updates a Referral by id.

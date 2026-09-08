@@ -3,7 +3,7 @@ import { createMedicalHistoryEvent } from '../../data/medical-history-events/cre
 import type {
   CreateMedicalHistoryEventInput,
   MedicalHistoryEvent,
-} from '../../data/medical-history-events/types';
+} from '../../model/medical-history-event';
 import { parseEntryDate } from '../../utils/daily-entries';
 import {
   assertOptionalHealthRecordFks,

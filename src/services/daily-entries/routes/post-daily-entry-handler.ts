@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { processCreateDailyEntry } from '../process-create-daily-entry';
-import type { CreateDailyEntryInput } from '../../../data/daily-entries';
+import type { CreateDailyEntryInput } from '../../../model/daily-entry';
 import {
   requirePgPool,
   sendClientError,

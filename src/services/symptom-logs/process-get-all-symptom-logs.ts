@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { getAllSymptomLogs } from '../../data/symptom-logs/get-all-symptom-logs';
-import type { SymptomLog } from '../../data/symptom-logs/types';
+import type { SymptomLog } from '../../model/symptom-log';
 
 /**
  * Loads all symptom logs.

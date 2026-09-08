@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { CreateDailyEntryInput, DailyEntry } from './types';
+import type { CreateDailyEntryInput, DailyEntry } from '../../model/daily-entry';
 
 /**
  * Creates a daily entry record.

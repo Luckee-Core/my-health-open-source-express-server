@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import type { InsuranceCoverage } from './types';
+import type { InsuranceCoverage } from '../../model/insurance-coverage';
 
 /**
  * Loads all insurance-coverages.
