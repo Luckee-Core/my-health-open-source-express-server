@@ -628,8 +628,9 @@ CREATE TABLE IF NOT EXISTS public.feed_logs (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_feed_logs_log_date
-  ON public.feed_logs (log_date);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_feed_logs_one_morning_per_date
+  ON public.feed_logs (log_date)
+  WHERE is_start = false;
 
 CREATE INDEX IF NOT EXISTS idx_feed_logs_formula_id
   ON public.feed_logs (formula_id);

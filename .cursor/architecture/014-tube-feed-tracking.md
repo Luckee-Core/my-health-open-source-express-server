@@ -13,13 +13,13 @@ Enteral (tube) feeding is tracked from pump readings taken each morning: total v
 ### Tables
 
 - `feed_formulas` — catalog of formulas (brand, name, `calories_per_1000_ml`, 1000 mL container, optional label FL OZ / QT / L)
-- `feed_logs` — one snapshot per `log_date` with pump `total_fed_ml`, `feed_left_ml`, `intermittent_rate_ml_per_hr`, `pump_reset`, `is_start`, and a **snapshotted** `calories_per_1000_ml`
+- `feed_logs` — pump snapshots with `total_fed_ml`, `feed_left_ml`, `intermittent_rate_ml_per_hr`, `pump_reset`, `is_start`, and a **snapshotted** `calories_per_1000_ml`. One **morning** row per `log_date` (`is_start = false`). The start row is separate and may share a date with that morning.
 
 Volume since the prior snapshot and calories are **not** stored. The web app derives them from consecutive snapshots.
 
 ### Starting point
 
-Tracking begins with a **one-time** `is_start` snapshot: current pump total, feed left, and rate as of now (any time of day). That row has no calories. Later morning snapshots compute volume from this origin. Only one start row is allowed.
+Tracking begins with a **one-time** `is_start` snapshot: current pump total, feed left, and rate as of now (any time of day). That row has no calories and is not today’s morning log. After it exists, the morning form never loads or updates it. Later morning snapshots compute volume from this origin. Only one start row is allowed.
 
 ### Calorie math
 
@@ -33,11 +33,11 @@ Tracking begins with a **one-time** `is_start` snapshot: current pump total, fee
 
 - `GET/POST/PATCH/DELETE /api/data/feed-formulas` — catalog CRUD
 - `GET /api/data/feed-logs` — all snapshots
-- `PUT /api/data/feed-logs` — upsert by `log_date`; copies `calories_per_1000_ml` from the selected formula
+- `PUT /api/data/feed-logs` — insert the start row once, or upsert the morning row for `log_date`; copies `calories_per_1000_ml` from the selected formula
 - `DELETE /api/data/feed-logs/:id` — remove a snapshot
 
 ## Consequences
 
-- Morning check-in and the tube-feed page can correct today’s numbers via upsert.
+- Morning check-in and the tube-feed page upsert **today’s morning** row. Saving the start does not occupy that slot.
 - Editing a formula’s calorie density does not rewrite historical log calories.
 - Intra-day bag hangs and pump resets are out of scope unless the next morning’s snapshot flags `pump_reset`.

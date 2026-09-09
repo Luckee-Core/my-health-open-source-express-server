@@ -356,7 +356,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
     {
       name: "Feed logs",
       description:
-        "Morning pump snapshots. PUT upserts by log_date and snapshots calories_per_1000_ml from the formula. Set is_start once to record the current pump total as the origin (no calories). Volume and calories are derived in the web app from consecutive totals.",
+        "Morning pump snapshots. PUT inserts the one-time is_start origin, or upserts the morning row for log_date (a morning may share a date with the start). Snapshots calories_per_1000_ml from the formula. Volume and calories are derived in the web app from consecutive totals.",
       endpoints: [
         {
           method: "GET",
@@ -391,7 +391,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
         {
           method: "PUT",
           path: "/api/data/feed-logs",
-          summary: "Upsert today's (or a given date's) pump snapshot",
+          summary: "Insert the start snapshot once, or upsert a morning snapshot",
           requestBody: {
             contentType: "application/json",
             example: {

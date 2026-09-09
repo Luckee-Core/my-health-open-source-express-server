@@ -1,5 +1,5 @@
 import type { Pool } from 'pg';
-import { getStartFeedLog, upsertFeedLogByDate } from '../../data/feed-logs';
+import { getStartFeedLog, insertStartFeedLog, upsertFeedLogByDate } from '../../data/feed-logs';
 import type { FeedLog, UpsertFeedLogInput } from '../../model/feed-log';
 import { requireFeedFormula } from '../../utils/feed-formulas';
 import { parseFeedLogDate } from '../../utils/feed-logs';
@@ -11,7 +11,7 @@ const optionalText = (value: string | null | undefined): string | null => {
 };
 
 /**
- * Upserts a morning feed snapshot, copying calorie density from the formula.
+ * Saves the one-time start snapshot or upserts a morning snapshot.
  */
 export const processUpsertFeedLog = async (
   pool: Pool,
@@ -35,12 +35,27 @@ export const processUpsertFeedLog = async (
       : parseFiniteNumber(input.intermittent_rate_ml_per_hr, 'intermittent_rate_ml_per_hr');
   if (rate <= 0) throw new Error('intermittent_rate_ml_per_hr must be greater than 0');
 
-  const isStart = input.is_start === true;
-  if (isStart) {
-    const existingStart = await getStartFeedLog(pool);
-    if (existingStart && existingStart.log_date !== logDate) {
+  const existingStart = await getStartFeedLog(pool);
+  const notes = optionalText(input.notes);
+  const wantsStart = input.is_start === true;
+
+  if (wantsStart) {
+    if (existingStart) {
       throw new Error('A starting point already exists');
     }
+    return insertStartFeedLog(pool, {
+      log_date: logDate,
+      formula_id: formula.id,
+      intermittent_rate_ml_per_hr: rate,
+      feed_left_ml: feedLeft,
+      total_fed_ml: totalFed,
+      calories_per_1000_ml: formula.calories_per_1000_ml,
+      notes,
+    });
+  }
+
+  if (!existingStart) {
+    throw new Error('A starting point is required before logging mornings');
   }
 
   return upsertFeedLogByDate(pool, {
@@ -49,9 +64,8 @@ export const processUpsertFeedLog = async (
     intermittent_rate_ml_per_hr: rate,
     feed_left_ml: feedLeft,
     total_fed_ml: totalFed,
-    pump_reset: isStart ? false : (input.pump_reset ?? false),
-    is_start: isStart,
+    pump_reset: input.pump_reset ?? false,
     calories_per_1000_ml: formula.calories_per_1000_ml,
-    notes: optionalText(input.notes),
+    notes,
   });
 };

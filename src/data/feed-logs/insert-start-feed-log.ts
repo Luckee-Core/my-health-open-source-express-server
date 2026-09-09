@@ -5,10 +5,9 @@ import type { FeedLog } from '../../model/feed-log';
 type Db = Pool | PoolClient;
 
 /**
- * Inserts or updates the morning snapshot for a calendar date.
- * Never writes the one-time start row.
+ * Inserts the one-time starting pump snapshot.
  */
-export const upsertFeedLogByDate = async (
+export const insertStartFeedLog = async (
   db: Db,
   input: {
     log_date: string;
@@ -16,28 +15,17 @@ export const upsertFeedLogByDate = async (
     intermittent_rate_ml_per_hr: number;
     feed_left_ml: number;
     total_fed_ml: number;
-    pump_reset: boolean;
     calories_per_1000_ml: number;
     notes: string | null;
   },
 ): Promise<FeedLog> => {
-  console.log('💾 upsertFeedLogByDate');
+  console.log('💾 insertStartFeedLog');
   const result = await db.query<FeedLog>(
     `INSERT INTO feed_logs (
       log_date, formula_id, intermittent_rate_ml_per_hr, feed_left_ml,
       total_fed_ml, pump_reset, is_start, calories_per_1000_ml, notes
     )
-    VALUES ($1, $2, $3, $4, $5, $6, false, $7, $8)
-    ON CONFLICT (log_date) WHERE is_start = false
-    DO UPDATE SET
-      formula_id = EXCLUDED.formula_id,
-      intermittent_rate_ml_per_hr = EXCLUDED.intermittent_rate_ml_per_hr,
-      feed_left_ml = EXCLUDED.feed_left_ml,
-      total_fed_ml = EXCLUDED.total_fed_ml,
-      pump_reset = EXCLUDED.pump_reset,
-      calories_per_1000_ml = EXCLUDED.calories_per_1000_ml,
-      notes = EXCLUDED.notes,
-      updated_at = now()
+    VALUES ($1, $2, $3, $4, $5, false, true, $6, $7)
     RETURNING ${FEED_LOG_SELECT}`,
     [
       input.log_date,
@@ -45,7 +33,6 @@ export const upsertFeedLogByDate = async (
       input.intermittent_rate_ml_per_hr,
       input.feed_left_ml,
       input.total_fed_ml,
-      input.pump_reset,
       input.calories_per_1000_ml,
       input.notes,
     ],

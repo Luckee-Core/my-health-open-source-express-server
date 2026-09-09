@@ -9,7 +9,7 @@ export const getAllFeedLogs = async (pool: Pool): Promise<FeedLog[]> => {
   const result = await pool.query<FeedLog>(
     `SELECT ${FEED_LOG_SELECT}
      FROM feed_logs
-     ORDER BY log_date DESC`,
+     ORDER BY log_date DESC, is_start ASC, created_at DESC`,
   );
   return result.rows;
 };
