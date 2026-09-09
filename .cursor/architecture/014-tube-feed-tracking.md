@@ -26,7 +26,7 @@ Tracking begins with a **one-time** `is_start` snapshot: current pump total, fee
 - Source of truth is `total_fed_ml` (pump cumulative).
 - The `is_start` snapshot is a baseline (no calories).
 - Later snapshots: `volume = current.total_fed_ml - previous.total_fed_ml`, unless `pump_reset` is true or the current total is lower than the previous (implicit reset) — then `volume = current.total_fed_ml`.
-- `calories = volume * (snapshotted calories_per_1000_ml / 1000)`.
+- `calories = milliliters * (formula.calories_per_1000_ml / 1000)` using the **formula on that log** (`formula_id`). Milliliters are volume since the prior snapshot; the start row uses its `total_fed_ml` (example: 500 mL at 2000 kcal / 1000 mL is 1000 kcal). Fall back to the snapshotted `calories_per_1000_ml` only if the formula row is missing.
 - Rate and feed left are operational context (hours of bag remaining = feed left / rate). They are not used for calorie estimates. `feed_left_ml` is remaining bag volume and is **not** capped by formula `container_volume_ml`.
 
 ### Endpoints
@@ -39,5 +39,5 @@ Tracking begins with a **one-time** `is_start` snapshot: current pump total, fee
 ## Consequences
 
 - Morning check-in and the tube-feed page upsert **today’s morning** row. Saving the start does not occupy that slot.
-- Editing a formula’s calorie density does not rewrite historical log calories.
+- History calories follow the formula currently linked on each log. Changing that formula’s kcal / 1000 mL updates displayed calories; the log still stores a snapshot for fallback.
 - Intra-day bag hangs and pump resets are out of scope unless the next morning’s snapshot flags `pump_reset`.
