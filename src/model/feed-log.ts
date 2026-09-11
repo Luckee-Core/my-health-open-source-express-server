@@ -20,6 +20,5 @@ export type UpsertFeedLogInput = {
   feed_left_ml: number;
   total_fed_ml: number;
   pump_reset?: boolean;
-  is_start?: boolean;
   notes?: string | null;
 };

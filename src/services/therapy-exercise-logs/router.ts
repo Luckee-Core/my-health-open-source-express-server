@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { getTherapyExerciseLogsHandler } from './routes/get-therapy-exercise-logs-handler';
 import { postIncrementTherapyExerciseLogHandler } from './routes/post-increment-therapy-exercise-log-handler';
+import { postDueTherapyExerciseLogHandler } from './routes/post-due-therapy-exercise-log-handler';
 import { postSkipTherapyExerciseLogHandler } from './routes/post-skip-therapy-exercise-log-handler';
 
 /**
@@ -11,5 +12,6 @@ export const createTherapyExerciseLogsRouter = (): Router => {
   router.get('/', getTherapyExerciseLogsHandler);
   router.post('/increment', postIncrementTherapyExerciseLogHandler);
   router.post('/skip', postSkipTherapyExerciseLogHandler);
+  router.post('/due', postDueTherapyExerciseLogHandler);
   return router;
 };

@@ -5,8 +5,7 @@ import type { FeedLog } from '../../model/feed-log';
 type Db = Pool | PoolClient;
 
 /**
- * Inserts or updates the morning snapshot for a calendar date.
- * Never writes the one-time start row.
+ * Inserts or updates the pump snapshot for a calendar date.
  */
 export const upsertFeedLogByDate = async (
   db: Db,
@@ -22,33 +21,53 @@ export const upsertFeedLogByDate = async (
   },
 ): Promise<FeedLog> => {
   console.log('💾 upsertFeedLogByDate');
-  const result = await db.query<FeedLog>(
+  const params = [
+    input.log_date,
+    input.formula_id,
+    input.intermittent_rate_ml_per_hr,
+    input.feed_left_ml,
+    input.total_fed_ml,
+    input.pump_reset,
+    input.calories_per_1000_ml,
+    input.notes,
+  ];
+
+  const updated = await db.query<FeedLog>(
+    `UPDATE feed_logs SET
+      formula_id = $2,
+      intermittent_rate_ml_per_hr = $3,
+      feed_left_ml = $4,
+      total_fed_ml = $5,
+      pump_reset = $6,
+      is_start = false,
+      calories_per_1000_ml = $7,
+      notes = $8,
+      updated_at = now()
+     WHERE log_date = $1
+     RETURNING ${FEED_LOG_SELECT}`,
+    params,
+  );
+
+  if (updated.rows.length > 1) {
+    const keepId = updated.rows[0].id;
+    await db.query(`DELETE FROM feed_logs WHERE log_date = $1 AND id <> $2`, [
+      input.log_date,
+      keepId,
+    ]);
+  }
+
+  if (updated.rows[0]) {
+    return updated.rows[0];
+  }
+
+  const inserted = await db.query<FeedLog>(
     `INSERT INTO feed_logs (
       log_date, formula_id, intermittent_rate_ml_per_hr, feed_left_ml,
       total_fed_ml, pump_reset, is_start, calories_per_1000_ml, notes
     )
     VALUES ($1, $2, $3, $4, $5, $6, false, $7, $8)
-    ON CONFLICT (log_date) WHERE is_start = false
-    DO UPDATE SET
-      formula_id = EXCLUDED.formula_id,
-      intermittent_rate_ml_per_hr = EXCLUDED.intermittent_rate_ml_per_hr,
-      feed_left_ml = EXCLUDED.feed_left_ml,
-      total_fed_ml = EXCLUDED.total_fed_ml,
-      pump_reset = EXCLUDED.pump_reset,
-      calories_per_1000_ml = EXCLUDED.calories_per_1000_ml,
-      notes = EXCLUDED.notes,
-      updated_at = now()
     RETURNING ${FEED_LOG_SELECT}`,
-    [
-      input.log_date,
-      input.formula_id,
-      input.intermittent_rate_ml_per_hr,
-      input.feed_left_ml,
-      input.total_fed_ml,
-      input.pump_reset,
-      input.calories_per_1000_ml,
-      input.notes,
-    ],
+    params,
   );
-  return result.rows[0];
+  return inserted.rows[0];
 };

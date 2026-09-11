@@ -13,7 +13,7 @@ Speech therapy homework has heterogeneous tracking: timed attempts (e.g. 10 × 5
 ### Tables
 
 - `therapy_exercises` — prescription (name, tracking_kind, target_count, unit_size, `frequency`, `is_active`, discipline, source)
-- `therapy_exercise_logs` — one row per `(exercise_id, log_date)` with `completed_count` and `skipped` (today only)
+- `therapy_exercise_logs` — one row per `(exercise_id, log_date)` with `completed_count`, `skipped`, and `due` (today only)
 - `therapy_exercise_imports` — preview/commit draft JSON (no long-term image storage)
 
 ### Schedule (`frequency` + `is_active`)
@@ -21,10 +21,11 @@ Speech therapy homework has heterogeneous tracking: timed attempts (e.g. 10 × 5
 | Schedule | Fields | Daily remaining list |
 |----------|--------|----------------------|
 | Daily homework | `frequency='daily'`, `is_active=true` | Included (dashboard, morning check-in, speech therapy remaining) |
-| Therapy session only | `frequency='session'`, `is_active=true` | Excluded — still loggable on session days without a daily skip |
+| Therapy session only | `frequency='session'`, `is_active=true` | Excluded until today’s log has `due=true` |
+| Session due today | `frequency='session'`, `is_active=true`, log `due=true` | Included for that date only |
 | Paused | `is_active=false` | Excluded — logging disabled until reactivated |
 
-`frequency` is `daily` or `session`. Pause is `is_active`, not a third frequency value.
+`frequency` is `daily` or `session`. Pause is `is_active`, not a third frequency value. Session exercises stay off the daily list until marked due for that date (`POST .../due`). Incrementing a session log also sets `due=true`.
 
 ### Tracking kinds
 
@@ -40,6 +41,8 @@ Done for the day when `completed_count` meets the tracking target (reps for `set
 `POST /api/data/therapy-exercise-logs/increment` with `{ exercise_id, log_date, delta }` atomically upserts and applies delta (floored at 0) and clears `skipped`. Used by speech therapy page, dashboard, and morning check-in.
 
 `POST /api/data/therapy-exercise-logs/skip` with `{ exercise_id, log_date, skipped }` marks or unmarks the exercise as not for today (e.g. waiting on nurse help).
+
+`POST /api/data/therapy-exercise-logs/due` with `{ exercise_id, log_date, due }` puts a **session** exercise on (or off) today’s remaining list without changing `frequency`. Daily homework ignores `due`.
 
 ### Photo import
 

@@ -455,6 +455,7 @@ CREATE TABLE IF NOT EXISTS public.therapy_exercise_logs (
   log_date DATE NOT NULL,
   completed_count INTEGER NOT NULL DEFAULT 0 CHECK (completed_count >= 0),
   skipped BOOLEAN NOT NULL DEFAULT false,
+  due BOOLEAN NOT NULL DEFAULT false,
   notes TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -628,16 +629,11 @@ CREATE TABLE IF NOT EXISTS public.feed_logs (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_feed_logs_one_morning_per_date
-  ON public.feed_logs (log_date)
-  WHERE is_start = false;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_feed_logs_log_date
+  ON public.feed_logs (log_date);
 
 CREATE INDEX IF NOT EXISTS idx_feed_logs_formula_id
   ON public.feed_logs (formula_id);
-
-CREATE UNIQUE INDEX IF NOT EXISTS idx_feed_logs_one_start
-  ON public.feed_logs (is_start)
-  WHERE is_start = true;
 
 CREATE TABLE IF NOT EXISTS public.speech_therapy_consumption (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

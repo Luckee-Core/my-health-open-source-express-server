@@ -4,26 +4,25 @@ import type { TherapyExerciseLog } from '../../model/therapy-exercise-log';
 type Db = Pool | PoolClient;
 
 /**
- * Increments or creates a therapy exercise log for a given exercise and date.
+ * Marks or unmarks a therapy exercise as due for a given date (session-only today list).
  */
-export const incrementTherapyExerciseLog = async (
+export const setTherapyExerciseLogDue = async (
   db: Db,
   exerciseId: string,
   logDate: string,
-  delta: number,
+  due: boolean,
 ): Promise<TherapyExerciseLog> => {
-  console.log('💾 incrementTherapyExerciseLog');
+  console.log('💾 setTherapyExerciseLogDue');
   const result = await db.query<TherapyExerciseLog>(
     `INSERT INTO therapy_exercise_logs (exercise_id, log_date, completed_count, skipped, due)
-     VALUES ($1, $2, GREATEST(0, $3), false, true)
+     VALUES ($1, $2, 0, false, $3)
      ON CONFLICT (exercise_id, log_date)
      DO UPDATE SET
-       completed_count = GREATEST(0, therapy_exercise_logs.completed_count + $3),
-       skipped = false,
-       due = true,
+       due = $3,
+       skipped = CASE WHEN $3 THEN false ELSE therapy_exercise_logs.skipped END,
        updated_at = now()
      RETURNING *`,
-    [exerciseId, logDate, delta],
+    [exerciseId, logDate, due],
   );
   return result.rows[0];
 };

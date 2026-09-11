@@ -356,7 +356,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
     {
       name: "Feed logs",
       description:
-        "Morning pump snapshots. PUT inserts the one-time is_start origin, or upserts the morning row for log_date (a morning may share a date with the start). Snapshots calories_per_1000_ml from the formula. Volume and calories are derived in the web app from consecutive totals.",
+        "One pump snapshot per log_date. PUT upserts that date. Snapshots calories_per_1000_ml from the formula. Volume and calories are derived in the web app from consecutive totals and the formula’s kcal per 1000 mL.",
       endpoints: [
         {
           method: "GET",
@@ -391,7 +391,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
         {
           method: "PUT",
           path: "/api/data/feed-logs",
-          summary: "Insert the start snapshot once, or upsert a morning snapshot",
+          summary: "Upsert the pump snapshot for a date",
           requestBody: {
             contentType: "application/json",
             example: {
@@ -401,7 +401,6 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
               feed_left_ml: 400,
               total_fed_ml: 1600,
               pump_reset: false,
-              is_start: true,
             },
           },
           responses: [
@@ -444,7 +443,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
     },
     buildEntityGroup(
       "Therapy exercises",
-      "Speech therapy prescriptions. frequency is daily (homework remaining list) or session (therapy-visit only). is_active=false pauses logging.",
+      "Speech therapy prescriptions. frequency is daily (homework remaining list) or session (therapy-visit only until marked due today). is_active=false pauses logging.",
       "/api/data/therapy-exercises",
       "therapy exercise",
       {
@@ -475,7 +474,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
     {
       name: "Therapy exercise logs",
       description:
-        "Daily progress per exercise. Use POST /increment to add or subtract reps/attempts. Use POST /skip to mark an exercise as not for today (e.g. waiting on nurse help).",
+        "Daily progress per exercise. Use POST /increment to add or subtract reps/attempts. Use POST /skip to mark an exercise as not for today. Use POST /due to put a session exercise on today's list.",
       endpoints: [
         {
           method: "GET",
@@ -494,6 +493,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
                     log_date: "2026-01-15",
                     completed_count: 3,
                     skipped: false,
+                    due: false,
                     notes: null,
                     created_at: ts,
                     updated_at: ts,
@@ -523,6 +523,7 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
                   log_date: "2026-01-15",
                   completed_count: 4,
                   skipped: false,
+                  due: true,
                   notes: null,
                   created_at: ts,
                   updated_at: ts,
@@ -551,6 +552,36 @@ export const buildApiDocsCatalog = (): ApiDocsCatalog => {
                   log_date: "2026-01-15",
                   completed_count: 0,
                   skipped: true,
+                  due: false,
+                  notes: null,
+                  created_at: ts,
+                  updated_at: ts,
+                },
+              },
+            },
+          ],
+        },
+        {
+          method: "POST",
+          path: "/api/data/therapy-exercise-logs/due",
+          summary: "Mark or unmark a session exercise as due for a given date",
+          requestBody: {
+            contentType: "application/json",
+            example: { exercise_id: "uuid", log_date: "2026-01-15", due: true },
+          },
+          responses: [
+            {
+              status: 200,
+              description: "Updated log",
+              example: {
+                success: true,
+                data: {
+                  id: "uuid",
+                  exercise_id: "uuid",
+                  log_date: "2026-01-15",
+                  completed_count: 0,
+                  skipped: false,
+                  due: true,
                   notes: null,
                   created_at: ts,
                   updated_at: ts,
